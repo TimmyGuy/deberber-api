@@ -1,25 +1,51 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import Editor from "../../components/Editor/Editor";
 
 export function New() {
     const [inputs, setInputs] = useState({});
-    const instanceRef = useRef(null);
+    const [editorData, setEditorData] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setInputs({ ...inputs, [name]: value });
     };
 
+    // TODO: Fix this shit (for some reason it wont store inputs)
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(inputs);
+        setLoading(true);
+        fetch('/api/blogs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...inputs,
+                content: {editorData},
+            }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                setLoading(false);
+                if (res.success) {
+                    window.location.href = '/blog/' + res.id;
+                } else {
+                    alert(res.message);
+                }
+            })
+            .catch(err => {
+                setLoading(false);
+                alert(err);
+            });
     };
 
     const handleEditorChange = (content) => {
-        // content.then(value => {
-        //     setInputs({ ...inputs, content: value });
-        // });
-        setInputs({ ...inputs, ['content']: 'test' });
+        setLoading(true);
+        content.then(value => {
+            setEditorData(value);
+            setLoading(false);
+        });
     };
 
     return (
@@ -90,7 +116,7 @@ export function New() {
                                     staan.</p>
                             </div>
 
-                            <Editor onChange={handleEditorChange} instanceRef={instanceRef}/>
+                            <Editor onChange={handleEditorChange}/>
                         </div>
                     </div>
 
@@ -154,6 +180,7 @@ export function New() {
                         Cancel
                     </button>
                     <button
+                        disabled={loading}
                         type="submit"
                         onClick={handleSubmit}
                         className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
