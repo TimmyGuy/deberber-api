@@ -46,15 +46,15 @@ class SettingsRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Settings[] Returns an array of Settings objects
+    //  * @return Background[] Returns an array of Background objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
+            ->orderBy('b.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -63,10 +63,10 @@ class SettingsRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Settings
+    public function findOneBySomeField($value): ?Background
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

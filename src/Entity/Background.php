@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\BackgroundRepository;
+use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -55,7 +55,7 @@ class Page
     private $published;
 
     /**
-     * @ORM\ManyToOne(targetEntity=background::class)
+     * @ORM\ManyToOne(targetEntity=Background::class)
      */
     private $background;
 

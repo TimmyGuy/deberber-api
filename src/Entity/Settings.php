@@ -6,8 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Id;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -16,43 +14,38 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Settings
 {
     /**
-     * @var int
-     * @ApiProperty(identifier=false)
      *
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ApiProperty(identifier=false)
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
+     * @ORM\Id
      * @ApiProperty(identifier=true)
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
-    private $key;
+    private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $value;
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getKey(): ?string
+    public function getName(): ?string
     {
-        return $this->key;
+        return $this->name;
     }
 
-    public function setKey(string $key): self
+    public function setName(string $name): self
     {
-        $this->key = $key;
+        $this->name = $name;
 
         return $this;
     }
@@ -62,7 +55,7 @@ class Settings
         return $this->value;
     }
 
-    public function setValue(?string $value): self
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
