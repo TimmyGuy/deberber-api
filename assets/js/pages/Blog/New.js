@@ -11,18 +11,19 @@ export function New() {
         setInputs({ ...inputs, [name]: value });
     };
 
-    // TODO: Fix this shit (for some reason it wont store inputs)
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
+        let data = JSON.stringify(editorData);
         fetch('/api/blogs', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 ...inputs,
-                content: {editorData},
+                content: data
             }),
         })
             .then(res => res.json())
