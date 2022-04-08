@@ -6,13 +6,23 @@ import {BlogPage, BlogPageEdit, BlogPageNew} from "./pages/Blog";
 import Settings from "./pages/Settings";
 import Navigation from "./pages/Navigation";
 import Backgrounds from "./pages/Backgrounds";
+import useToken from "./hooks/useToken";
+import Login from "./pages/Login";
 
 function App() {
+    const [token, setToken] = useToken();
+
+    if(!token) {
+        return (
+            <Login setToken={setToken}/>
+        )
+    }
+
   return (
     <BrowserRouter>
       <Sidebar>
         <Routes>
-            <Route path="/" element={<p>Dashboard</p>} />
+            <Route path="/" element={<p>Dashboardd</p>} />
             <Route path="/navigation" element={<Navigation/>} />
             <Route path="/settings" element={<Settings/>} />
             <Route path="blog" element={<BlogPage />}/>
