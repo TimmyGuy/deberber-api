@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,12 +19,6 @@ class Blog
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
 
     /**
      * @ORM\Column(type="date")
@@ -62,6 +57,7 @@ class Blog
 
     /**
      * @ORM\ManyToOne(targetEntity=Background::class)
+     * @ApiSubresource
      */
     private $background;
 
@@ -73,18 +69,6 @@ class Blog
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface

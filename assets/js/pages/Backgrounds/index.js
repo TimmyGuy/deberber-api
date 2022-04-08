@@ -64,7 +64,7 @@ export default function Backgrounds() {
                                 <li className="relative">
                                     <button
                                         type="button"
-                                        className="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        className="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                                     >
                                         <svg
                                             className="mx-auto h-12 w-12 text-gray-400"
@@ -89,8 +89,8 @@ export default function Backgrounds() {
                                         <div
                                             className={classNames(
                                                 file.current
-                                                    ? 'ring-2 ring-offset-2 ring-indigo-500'
-                                                    : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500',
+                                                    ? 'ring-2 ring-offset-2 ring-yellow-500'
+                                                    : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-yellow-500',
                                                 'group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden'
                                             )}
                                         >
@@ -151,7 +151,7 @@ export default function Backgrounds() {
                                 <p className="text-sm text-gray-500 italic">Add a description to this image.</p>
                                 <button
                                     type="button"
-                                    className="bg-white rounded-full h-8 w-8 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="bg-white rounded-full h-8 w-8 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                                 >
                                     <PencilIcon className="h-5 w-5" aria-hidden="true"/>
                                     <span className="sr-only">Add description</span>
@@ -161,13 +161,13 @@ export default function Backgrounds() {
                         <div className="flex">
                             <button
                                 type="button"
-                                className="flex-1 bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="flex-1 bg-yellow-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                             >
                                 Download
                             </button>
                             <button
                                 type="button"
-                                className="flex-1 ml-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="flex-1 ml-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                             >
                                 Delete
                             </button>
