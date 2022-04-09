@@ -2,13 +2,50 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\CreateBackgroundAction;
 
 /**
- * @ApiResource()
- * @ORM\Entity(repositoryClass=BackgroundRepository::class)
+ * @ApiResource(
+ *     iri="http://schema.org/MediaObject",
+ *     normalizationContext={"groups"={"background_read"}},
+ *     collectionOperations={
+ *          "post"={
+ *              "controller"=CreateBackgroundAction::class,
+ *              "deserialize"=false,
+ *              "validation_groups"={"Default", "background_create"},
+ *              "openapi_context"={
+ *                  "requestBody"={
+ *                      "content"={
+ *                          "multipart/form-data"={
+ *                              "schema"={
+ *                                  "type"="object",
+ *                                  "properties"={
+ *                                      "file"={
+ *                                          "type"="string",
+ *                                          "format"="binary"
+ *                                      }
+ *                                  }
+ *                              }
+ *                          }
+ *                      }
+ *                  }
+ *              }
+ *          },
+ *     "get"
+ *     },
+ *     itemOperations={
+ *     "get"
+ *   }
+ * )
+ * @ORM\Entity()
+ * @Vich\Uploadable
  */
 class Background
 {
@@ -20,41 +57,30 @@ class Background
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     *
+     * @ApiProperty(iri="http://schema.org/contentUrl")
+     * @Groups({"background_read"})
      */
-    private $title;
+    public $contentUrl;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var File|null
+     *
+     * @Assert\NotNull(groups={"background_create"})
+     * @Vich\UploadableField(mapping="backgrounds", fileNameProperty="filePath")
      */
-    private $filename;
+    public $file;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    public $filePath;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-    public function setFilename(string $filename): self
-    {
-        $this->filename = $filename;
-
-        return $this;
     }
 }

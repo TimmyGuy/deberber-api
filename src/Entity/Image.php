@@ -2,15 +2,53 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\CreateImageAction;
 
 /**
- * @ApiResource()
- * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @ApiResource(
+ *     iri="http://schema.org/MediaObject",
+ *     normalizationContext={"groups"={"image_read"}},
+ *     collectionOperations={
+ *          "post"={
+ *              "controller"=CreateImageAction::class,
+ *              "deserialize"=false,
+ *              "validation_groups"={"Default", "image_create"},
+ *              "openapi_context"={
+ *                  "requestBody"={
+ *                      "content"={
+ *                          "multipart/form-data"={
+ *                              "schema"={
+ *                                  "type"="object",
+ *                                  "properties"={
+ *                                      "file"={
+ *                                          "type"="string",
+ *                                          "format"="binary"
+ *                                      }
+ *                                  }
+ *                              }
+ *                          }
+ *                      }
+ *                  }
+ *              }
+ *          },
+ *     "get"
+ *     },
+ *     itemOperations={
+ *     "get"
+ *   }
+ * )
+ * @ORM\Entity()
+ * @Vich\Uploadable
  */
 class Image
+
 {
     /**
      * @ORM\Id
@@ -20,58 +58,30 @@ class Image
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     *
+     * @ApiProperty(iri="http://schema.org/contentUrl")
+     * @Groups({"image_read"})
      */
-    private $url;
+    public $contentUrl;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @var File|null
+     *
+     * @Assert\NotNull(groups={"image_create"})
+     * @Vich\UploadableField(mapping="images", fileNameProperty="filePath")
      */
-    private $createdAt;
+    public $file;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
      */
-    private $updatedAt;
+    public $filePath;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 }
