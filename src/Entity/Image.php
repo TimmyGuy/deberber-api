@@ -54,6 +54,7 @@ class Image
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"image_read"})
      */
     private $id;
 

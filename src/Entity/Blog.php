@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -62,7 +63,11 @@ class Blog
     private $background;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var Image|null
+     *
+     * @ORM\ManyToOne(targetEntity=Image::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://schema.org/image")
      */
     private $thumbnail;
 
@@ -167,12 +172,12 @@ class Blog
         return $this;
     }
 
-    public function getThumbnail(): ?string
+    public function getThumbnail(): ?Image
     {
         return $this->thumbnail;
     }
 
-    public function setThumbnail(string $thumbnail): self
+    public function setThumbnail(Image $thumbnail): self
     {
         $this->thumbnail = $thumbnail;
 

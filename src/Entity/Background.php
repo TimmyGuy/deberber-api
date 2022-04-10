@@ -56,6 +56,7 @@ class Background
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"background_read"})
      */
     private $id;
 
