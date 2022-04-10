@@ -13,15 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Settings
 {
-    /**
-     *
-     * @ApiProperty(identifier=false)
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
+        /**
      * @ORM\Id
      * @ApiProperty(identifier=true)
      * @ORM\Column(type="string", length=255)
@@ -32,11 +24,6 @@ class Settings
      * @ORM\Column(type="string", length=255)
      */
     private $value;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

@@ -1162,6 +1162,11 @@
   "resolved" "https://registry.npmjs.org/@editorjs/header/-/header-2.6.2.tgz"
   "version" "2.6.2"
 
+"@editorjs/image@^2.6.2":
+  "integrity" "sha512-lai6LFJ8m3qRmSjio66o0CX7/75OupC3FQ5JWrV/biRT6GvUHtRNWKaMowKcC2ndXtfs4w6WwRxcXlB4WhUAdg=="
+  "resolved" "https://registry.npmjs.org/@editorjs/image/-/image-2.6.2.tgz"
+  "version" "2.6.2"
+
 "@editorjs/link@^2.4.0":
   "integrity" "sha512-Dk5n4HkiXtZvhDIEBu7uiXhkPl2lhmMFW8FaUnOiERZHJzIZGQf/qe6GdFN6Bo51j/wVADVyq6m8ZylKwIiCVA=="
   "resolved" "https://registry.npmjs.org/@editorjs/link/-/link-2.4.0.tgz"

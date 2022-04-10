@@ -84,4 +84,9 @@ class Image
     {
         return $this->id;
     }
+
+    public function getSuccess(): int
+    {
+        return 1;
+    }
 }
