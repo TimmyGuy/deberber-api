@@ -28,6 +28,14 @@ export function Collection() {
         }
     })
 
+    const togglePublished = (blog) => {
+        fetch('/api/blogs/' + blog.id + '/toggle')
+            .then(res => res.json())
+            .then(data => {
+                setLoaded(false);
+            });
+    }
+
     return (
         <div>
             <div className="sm:flex sm:items-center">
@@ -51,7 +59,7 @@ export function Collection() {
                 <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                            {<TableWithCTA items={blogs} type='blog' />}
+                            {<TableWithCTA items={blogs} toggle={togglePublished} type='blog' />}
                         </div>
                     </div>
                 </div>

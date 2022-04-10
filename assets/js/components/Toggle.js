@@ -6,13 +6,18 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Toggle({ checked = false, changeUrl }) {
+export default function Toggle({ checked = false, onToggle, item }) {
     const [enabled, setEnabled] = useState(checked)
+
+    const handleToggle = () => {
+        setEnabled(!enabled)
+        onToggle(item)
+    }
 
     return (
         <Switch
             checked={enabled}
-            onChange={setEnabled}
+            onChange={handleToggle}
             className={classNames(
                 enabled ? 'bg-green-600 focus:ring-green-500' : 'bg-red-200 focus:ring-red-200',
                 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2'

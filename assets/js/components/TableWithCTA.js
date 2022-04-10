@@ -3,7 +3,7 @@ import Toggle from "./Toggle";
 import {Link} from "react-router-dom";
 import {ExternalLinkIcon} from "@heroicons/react/outline";
 
-export function TableWithCTA({items, type}) {
+export function TableWithCTA({items, toggle, type}) {
     return <table className="min-w-full divide-y divide-gray-300">
         <thead className="bg-gray-50">
         <tr>
@@ -40,7 +40,8 @@ export function TableWithCTA({items, type}) {
                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <Toggle
                         checked={item.published}
-                        changeUrl={'/api/'+type+'/' + item.id + '/publish'}
+                        onToggle={toggle}
+                        item={item}
                     />
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
