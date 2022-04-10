@@ -1,48 +1,32 @@
-import React from 'react';
-import {
-    PencilIcon,
-
-} from '@heroicons/react/solid'
-const files = [
-    {
-        name: 'Ontdek alles',
-        size: '??',
-        source:
-            'https://api.deberber.nl/assets/img/ontdek-alles.svg',
-        current: true,
-    },
-    {
-        name: 'Boom schommel',
-        size: '??',
-        source:
-            'https://api.deberber.nl/assets/img/boom-schommel.svg',
-        current: false,
-    },
-    {
-        name: 'Gedachten',
-        size: '??',
-        source:
-            'https://api.deberber.nl/assets/img/gedachten.svg',
-        current: false,
-    },
-    // More files...
-]
-const currentFile = {
-    name: 'Ontdek alles',
-    size: '??',
-    source:
-        'https://api.deberber.nl/assets/img/ontdek-alles.svg',
-    information: {
-        Created: 'June 8, 2020',
-        'Last modified': 'June 8, 2020',
-    },
-}
-
+import React, {useEffect, useState} from 'react';
+import ImageUploadOverlay from "../../ui/Overlay/ImageUploadOverlay";
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Backgrounds() {
+    const [files, setFiles] = useState([]);
+    const [currentFile, setCurrentFile] = useState();
+    const [loading, setLoading] = useState(true);
+    const [showOverlay, setShowOverlay] = useState(false);
+
+    useEffect(() => {
+        if(loading) {
+            fetch('http://127.0.0.1:8000/api/backgrounds',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    setLoading(false);
+                    setFiles(data);
+                })
+        }
+    }, [files, loading]);
+
     return (
         <>
             <div className="flex-1 flex items-stretch overflow-hidden">
@@ -65,6 +49,7 @@ export default function Backgrounds() {
                                     <button
                                         type="button"
                                         className="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                        onClick={() => setShowOverlay(true)}
                                     >
                                         <svg
                                             className="mx-auto h-12 w-12 text-gray-400"
@@ -84,8 +69,8 @@ export default function Backgrounds() {
                                         <span className="mt-2 block text-sm font-medium text-gray-900">Voeg een afbeelding toe</span>
                                     </button>
                                 </li>
-                                {files.map((file) => (
-                                    <li key={file.name} className="relative">
+                                {!loading && files.map((file) => (
+                                    <li key={file.title} className="relative">
                                         <div
                                             className={classNames(
                                                 file.current
@@ -95,67 +80,44 @@ export default function Backgrounds() {
                                             )}
                                         >
                                             <img
-                                                src={file.source}
+                                                src={file.contentUrl}
                                                 alt=""
                                                 className={classNames(
                                                     file.current ? '' : 'group-hover:opacity-75',
                                                     'object-cover pointer-events-none'
                                                 )}
                                             />
-                                            <button type="button" className="absolute inset-0 focus:outline-none">
-                                                <span className="sr-only">View details for {file.name}</span>
+                                            <button type="button" className="absolute inset-0 focus:outline-none" onClick={() => {
+                                                setCurrentFile(file);
+                                            }}>
+                                                <span className="sr-only">View details for {file.title}</span>
                                             </button>
                                         </div>
                                         <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
-                                            {file.name}
+                                            {file.title}
                                         </p>
-                                        <p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.size}</p>
+                                        <p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.fileType}</p>
                                     </li>
                                 ))}
                             </ul>
                         </section>
                     </div>
                 </main>
-
                 {/* Details sidebar */}
-                <aside className="hidden w-96 bg-white p-8 border-l border-gray-200 overflow-y-auto lg:block">
+                {currentFile && <aside className="hidden w-96 bg-white p-8 border-l border-gray-200 overflow-y-auto lg:block">
                     <div className="pb-16 space-y-6">
                         <div>
                             <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                                <img src={currentFile.source} alt="" className="object-cover"/>
+                                <img src={currentFile.contentUrl} alt="" className="object-cover"/>
                             </div>
                             <div className="mt-4 flex items-start justify-between">
                                 <div>
                                     <h2 className="text-lg font-medium text-gray-900">
                                         <span className="sr-only">Details for </span>
-                                        {currentFile.name}
+                                        {currentFile.title}
                                     </h2>
-                                    <p className="text-sm font-medium text-gray-500">{currentFile.size}</p>
+                                    <p className="text-sm font-medium text-gray-500">{currentFile.fileType}</p>
                                 </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="font-medium text-gray-900">Information</h3>
-                            <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
-                                {Object.keys(currentFile.information).map((key) => (
-                                    <div key={key} className="py-3 flex justify-between text-sm font-medium">
-                                        <dt className="text-gray-500">{key}</dt>
-                                        <dd className="text-gray-900">{currentFile.information[key]}</dd>
-                                    </div>
-                                ))}
-                            </dl>
-                        </div>
-                        <div>
-                            <h3 className="font-medium text-gray-900">Description</h3>
-                            <div className="mt-2 flex items-center justify-between">
-                                <p className="text-sm text-gray-500 italic">Add a description to this image.</p>
-                                <button
-                                    type="button"
-                                    className="bg-white rounded-full h-8 w-8 flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                                >
-                                    <PencilIcon className="h-5 w-5" aria-hidden="true"/>
-                                    <span className="sr-only">Add description</span>
-                                </button>
                             </div>
                         </div>
                         <div className="flex">
@@ -173,8 +135,9 @@ export default function Backgrounds() {
                             </button>
                         </div>
                     </div>
-                </aside>
+                </aside>}
             </div>
+            {showOverlay && <ImageUploadOverlay title="Upload een achtergrond" description="Upload een achtergrond" setLoading={setLoading} setShowOverlay={setShowOverlay} url="http://127.0.0.1:8000/api/backgrounds"/>}
         </>
     )
 }

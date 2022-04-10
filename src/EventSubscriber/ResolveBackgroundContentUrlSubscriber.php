@@ -54,6 +54,7 @@ class ResolveBackgroundContentUrlSubscriber implements \Symfony\Component\EventD
             }
 
             $background->contentUrl = $this->storage->resolveUri($background, 'file');
+            $background->fileType = substr($background->contentUrl, strrpos($background->contentUrl, '.') + 1);
         }
     }
 }

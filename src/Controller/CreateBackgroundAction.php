@@ -17,6 +17,7 @@ class CreateBackgroundAction
 
         $background = new Background();
         $background->file = $uploadedFile;
+        $background->setTitle($request->request->get('title'));
 
         return $background;
     }

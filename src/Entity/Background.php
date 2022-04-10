@@ -30,6 +30,9 @@ use App\Controller\CreateBackgroundAction;
  *                                      "file"={
  *                                          "type"="string",
  *                                          "format"="binary"
+ *                                      },
+ *                                      "title"={
+ *                                          "type"="string"
  *                                      }
  *                                  }
  *                              }
@@ -79,8 +82,32 @@ class Background
      */
     public $filePath;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"background_read", "background_create"})
+     */
+    private $title;
+
+    /**
+     * @var false|int the file type
+     * @Groups({"background_read"})
+     */
+    public $fileType;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }
