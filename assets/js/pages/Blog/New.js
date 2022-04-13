@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Editor from "../../components/Editor/Editor";
 import BackgroundFinder from "../../components/BackgroundFinder";
+import {ExclamationCircleIcon} from "@heroicons/react/solid";
 
 export function New() {
     const [inputs, setInputs] = useState({slug: ''});
@@ -14,9 +15,55 @@ export function New() {
         setInputs({...inputs, [name]: value});
     };
 
+    function validateForm() {
+        let wrong = false;
+        // check if title is empty
+        if (!inputs.title || inputs.title.length === 0) {
+            let titleElement = document.querySelector('#title');
+            titleElement.classList.add('border-red-900');
+            titleElement.classList.add('focus:ring-red-500');
+            titleElement.append(errorMessage('Titel is verplicht'));
+            titleElement.focus();
+            wrong = true;
+        }
+        // check if slug is empty
+        if (!inputs.slug || inputs.slug.length === 0) {
+            let slugElement = document.querySelector('#slug');
+            slugElement.classList.add('border-red-900');
+            slugElement.classList.add('focus:ring-red-500');
+            slugElement.append(errorMessage('Slug is verplicht'));
+            slugElement.focus();
+            wrong = true;
+        }
+        // check if thumbnail is selected
+        if (!thumbnail) {
+            let thumbnailElement = document.querySelector('#thumbnail-preview');
+            thumbnailElement.classList.add('border-red-900');
+            thumbnailElement.classList.add('focus:ring-red-500');
+            thumbnailElement.append(errorMessage('Thumbnail is verplicht'));
+            thumbnailElement.focus();
+            wrong = true;
+        }
+        return wrong;
+    }
+
+    const errorMessage = (msg) => {
+        let el = document.createElement('p');
+        el.innerText = msg;
+        el.classList.add('mt-2');
+        el.classList.add('text-sm');
+        el.classList.add('text-red-600');
+        return el;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
+        if (validateForm()) {
+            setLoading(false);
+            return;
+        }
 
         async function uploadImage(thumbnail) {
             let imageData = new FormData();
@@ -34,8 +81,6 @@ export function New() {
         }
 
         const image = await uploadImage(thumbnail);
-
-
 
         if(image.id) {
             let data = JSON.stringify(editorData);
