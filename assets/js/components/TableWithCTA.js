@@ -25,7 +25,7 @@ export function TableWithCTA({items, toggle, type}) {
         </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-        {items.map((item) => (
+        {items.length > 0 ? items.map((item) => (
             <tr key={item.id}>
                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                     {item.title}
@@ -50,7 +50,29 @@ export function TableWithCTA({items, toggle, type}) {
                     </Link>
                 </td>
             </tr>
-        ))}
+        )) : <SkeletonLoader />}
         </tbody>
     </table>;
+}
+
+function SkeletonLoader() {
+    return (
+        <tr>
+            <td className="animate-pulse whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                <div className="h-2 bg-slate-200 rounded"/>
+            </td>
+            <td className="animate-pulse whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <div className="h-2 bg-slate-200 rounded"/>
+            </td>
+            <td className="animate-pulse whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <div className="h-2 bg-slate-200 rounded"/>
+            </td>
+            <td className="animate-pulse whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <div className="rounded-full bg-slate-200 h-5 w-10"/>
+            </td>
+            <td className="animate-pulse relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                <div className="h-2 bg-slate-200 rounded"/>
+            </td>
+        </tr>
+    );
 }
