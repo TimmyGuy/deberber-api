@@ -12,31 +12,32 @@ import Login from "./pages/Login";
 function App() {
     const [token, setToken] = useToken();
 
-    if(!token) {
+
+    if (!token) {
         return (
             <Login setToken={setToken}/>
         )
     }
 
-  return (
-    <BrowserRouter>
-      <Sidebar>
-        <Routes>
-            <Route path="/" element={<p>Dashboardd</p>} />
-            <Route path="/navigation" element={<Navigation/>} />
-            <Route path="/settings" element={<Settings/>} />
-            <Route path="blog" element={<BlogPage />}/>
-            <Route path="blog/:id" element={<BlogPageEdit />} />
-            <Route path="blog/new" element={<BlogPageNew />} />
-            <Route path="page" element={<p>Page</p>}>
-                <Route path=":id" element={<p>Page Post</p>} />
-                <Route path="new" element={<p>Nieuwe page</p>} />
-            </Route>
-            <Route path="/backgrounds" element={<Backgrounds/>} />
-        </Routes>
-      </Sidebar>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <Sidebar>
+                <Routes>
+                    <Route path="/" element={<p>Dashboardd</p>}/>
+                    <Route path="/navigation" element={<Navigation/>}/>
+                    <Route path="/settings" element={<Settings/>}/>
+                    <Route path="blog" element={<BlogPage/>}/>
+                    <Route path="blog/:id" element={<BlogPageEdit/>}/>
+                    <Route path="blog/new" element={<BlogPageNew/>}/>
+                    <Route path="page" element={<p>Page</p>}>
+                        <Route path=":id" element={<p>Page Post</p>}/>
+                        <Route path="new" element={<p>Nieuwe page</p>}/>
+                    </Route>
+                    <Route path="/backgrounds" element={<Backgrounds/>}/>
+                </Routes>
+            </Sidebar>
+        </BrowserRouter>
+    );
 }
 
 export default App;
