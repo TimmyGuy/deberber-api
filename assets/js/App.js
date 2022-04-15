@@ -8,6 +8,7 @@ import Navigation from "./pages/Navigation";
 import Backgrounds from "./pages/Backgrounds";
 import useToken from "./hooks/useToken";
 import Login from "./pages/Login";
+import {Page, PageEdit, PageNew} from "./pages/Page";
 
 function App() {
     const [token, setToken] = useToken();
@@ -29,10 +30,9 @@ function App() {
                     <Route path="blog" element={<BlogPage/>}/>
                     <Route path="blog/:id" element={<BlogPageEdit/>}/>
                     <Route path="blog/new" element={<BlogPageNew/>}/>
-                    <Route path="page" element={<p>Page</p>}>
-                        <Route path=":id" element={<p>Page Post</p>}/>
-                        <Route path="new" element={<p>Nieuwe page</p>}/>
-                    </Route>
+                    <Route path="page" element={<Page/>}/>
+                    <Route path="page/:id" element={<PageEdit/>}/>
+                    <Route path="page/new" element={<PageNew/>}/>
                     <Route path="/backgrounds" element={<Backgrounds/>}/>
                 </Routes>
             </Sidebar>
