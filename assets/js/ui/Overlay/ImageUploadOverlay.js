@@ -1,10 +1,12 @@
 /* This example requires Tailwind CSS v2.0+ */
-import React, { Fragment, useRef} from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React, {Fragment, useRef} from 'react'
+import {Dialog, Transition} from '@headlessui/react'
 import {PhotographIcon} from '@heroicons/react/outline'
+import {useNotificationContext, ADD} from "../../contexts/NotificationContext";
 
 export default function ImageUploadOverlay({title, setShowOverlay, url, setLoading}) {
 
+    const {dispatch} = useNotificationContext();
     const cancelButtonRef = useRef(null)
 
     const handleSubmit = async (e) => {
@@ -22,7 +24,7 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                dispatch({type: ADD, payload: {type: 'success', title: 'Upload gelukt', description: 'Afbeelding succesvol geüpload'}});
                 setLoading(true)
                 setShowOverlay(false)
             })
@@ -31,7 +33,8 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
 
     return (
         <Transition.Root show={true} as={Fragment}>
-            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setShowOverlay}>
+            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef}
+                    onClose={setShowOverlay}>
                 <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                     <Transition.Child
                         as={Fragment}
@@ -42,7 +45,7 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                        <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"/>
                     </Transition.Child>
 
                     {/* This element is to trick the browser into centering the modal contents. */}
@@ -58,10 +61,12 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
                         leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                         leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
-                        <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                        <div
+                            className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
                             <div className="sm:flex sm:items-start">
-                                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
-                                    <PhotographIcon className="h-6 w-6 text-yellow-600" aria-hidden="true" />
+                                <div
+                                    className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <PhotographIcon className="h-6 w-6 text-yellow-600" aria-hidden="true"/>
                                 </div>
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
@@ -72,7 +77,8 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
                                             <form id="form" onSubmit={handleSubmit}>
                                                 <div className="grid grid-cols-1 gap-4">
                                                     <div className="col-span-1">
-                                                        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                                                        <label htmlFor="title"
+                                                               className="block text-sm font-medium text-gray-700">
                                                             Titel
                                                         </label>
                                                         <input
@@ -83,7 +89,8 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
                                                         />
                                                     </div>
                                                     <div className="col-span-1">
-                                                        <label htmlFor="file" className="block text-sm font-medium text-gray-700">
+                                                        <label htmlFor="file"
+                                                               className="block text-sm font-medium text-gray-700">
                                                             Bestand
                                                         </label>
                                                         <input
@@ -91,6 +98,7 @@ export default function ImageUploadOverlay({title, setShowOverlay, url, setLoadi
                                                             className="mt-1 block w-full px-3 py-2 rounded-md text-base leading-6 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                                             placeholder="Bestand"
                                                             type="file"
+                                                            accept="image/*"
                                                         />
                                                     </div>
                                                 </div>
