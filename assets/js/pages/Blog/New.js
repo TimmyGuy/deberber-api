@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import Editor from "../../components/Editor/Editor";
 import BackgroundFinder from "../../components/BackgroundFinder";
-import {ExclamationCircleIcon} from "@heroicons/react/solid";
 
 export function New() {
     const [inputs, setInputs] = useState({slug: ''});
