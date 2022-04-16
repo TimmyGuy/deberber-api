@@ -3,68 +3,51 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Vich\UploaderBundle\Storage\StorageInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class UploadController extends AbstractController
 {
-    private $client;
+    private $storage;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(StorageInterface $storage)
     {
-        $this->client = $client;
+        $this->storage = $storage;
     }
 
     /**
-     * @Route("/api/uploadByFile", name="app_upload_by_file", methods={"POST"})
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @return JsonResponse
+     * @Route ("/api/uploadByFile", name="upload")
      */
-    public function index(Request $request): Response
+    function uploadByFile(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $file = $request->files->get('file');
+        $uploadedFile = $request->files->get('file');
+        if (!$uploadedFile) {
+            throw new BadRequestHttpException('"file" is required');
+        }
 
-        $file->getClientOriginalName();
+        $image = new Image();
+        $image->file = $uploadedFile;
 
-//        $formData = new FormDataPart([
-//            'file' => $file
-//        ]);
+        $manager = $doctrine->getManager();
+        $manager->persist($image);
+        $manager->flush();
 
-//        $response = $this->client->request('POST', 'http://127.0.0.1:8000/api/images', [
-//            'body' => $formData->toIterable(),
-//            'headers' => $formData->getPreparedHeaders()->toArray()
-//        ]);
+        $image->contentUrl = $this->storage->resolveUri($image, 'file');
 
-//        $content = $response->toArray();
-
-//        return $this->json($response->toArray());
-        return $this->json($file->getClientOriginalName());
-    }
-
-    function uploadFile($file) {
-//        if ($file) {
-//            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-//            // this is needed to safely include the file name as part of the URL
-//            $safeFilename = $slugger->slug($originalFilename);
-//            $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-//
-//            // Move the file to the directory where brochures are stored
-//            try {
-//                $file->move(
-//                    $this->getParameter('brochures_directory'),
-//                    $newFilename
-//                );
-//            } catch (FileException $e) {
-//                // ... handle exception if something happens during file upload
-//            }
-//
-//            // updates the 'brochureFilename' property to store the PDF file name
-//            // instead of its contents
-//            $product->setBrochureFilename($newFilename);
-//        }
+        return $this->json([
+            'success' => 1,
+            'file' => [
+                'url' => $image->contentUrl,
+            ]
+        ]);
 
     }
 }
