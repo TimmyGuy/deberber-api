@@ -6,7 +6,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function TextAreaInput({id: name, label, value, onChange, placeholder, required, errorMessage}) {
+export default function TextAreaInput({name, label, value, onChange, placeholder, required, errorMessage}) {
     const [showError, setShowError] = useState(false);
 
     // function change(e) {

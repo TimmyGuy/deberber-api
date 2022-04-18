@@ -9,14 +9,11 @@ export default function Settings() {
     const [confirmGeneral, setConfirmGeneral] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [block1, setBlock1] = useState({});
-    const [block2, setBlock2] = useState({});
-    const [block3, setBlock3] = useState({});
-    const [block4, setBlock4] = useState({});
+    const [blocks, setBlocks] = useState({});
     const [dataCollected, setDataCollected] = useState(false);
 
     useEffect(() => {
-        if(!dataCollected) {
+        if (!dataCollected) {
             fetch('/api/settings', {
                 method: 'GET',
                 headers: {
@@ -27,80 +24,43 @@ export default function Settings() {
                 .then(res => res.json())
                 .then(res => {
                     setDataCollected(true);
-                    const blocks = {block1, block2, block3, block4};
-                    res.forEach(setting => {
-                        if(setting.name === 'SITE_TITLE') {
-                            setTitle(setting.value);
-                        } else if(setting.name === 'SITE_DESCRIPTION') {
-                            setDescription(setting.value);
-                        } else if(setting.name === 'BLOCK1_TITLE') {
-                            blocks.block1.title = setting.value;
-                        } else if(setting.name === 'BLOCK1_DESCRIPTION') {
-                            blocks.block1.description = setting.value;
-                        } else if(setting.name === 'BLOCK1_URL') {
-                            blocks.block1.url = setting.value;
-                        } else if(setting.name === 'BLOCK2_TITLE') {
-                            blocks.block2.title = setting.value;
-                        } else if(setting.name === 'BLOCK2_DESCRIPTION') {
-                            blocks.block2.description = setting.value;
-                        } else if(setting.name === 'BLOCK2_URL') {
-                            blocks.block2.url = setting.value;
-                        } else if(setting.name === 'BLOCK3_TITLE') {
-                            blocks.block3.title = setting.value;
-                        } else if(setting.name === 'BLOCK4_TITLE') {
-                            blocks.block4.title = setting.value;
-                        } else if(setting.name === 'BLOCK4_DESCRIPTION') {
-                            blocks.block4.description = setting.value;
+                    for (let key in res) {
+                        if (res[key].name === "SITE_DESCRIPTION") {
+                            setDescription(res[key].value);
+                        } else if (res[key].name === "SITE_TITLE") {
+                            setTitle(res[key].value);
+                        } else {
+                            setBlocks(prevState => ({
+                                ...prevState,
+                                [res[key].name]: res[key].value
+                            }));
                         }
-                    });
-                    setBlock1(blocks.block1);
-                    setBlock1(blocks.block2);
-                    setBlock1(blocks.block3);
-                    setBlock1(blocks.block4);
+                    }
                 })
                 .catch(err => console.log(err));
         }
-    })
+    }, [blocks])
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        switch (id) {
-            case 'BLOCK1':
-                setBlock1({...block1, [name]: value})
-                break;
-            case 'BLOCK2':
-                setBlock2({...block2, [name]: value})
-                break;
-            case 'BLOCK3':
-                setBlock3({...block3, [name]: value})
-                break;
-            case 'BLOCK4':
-                setBlock4({...block4, [name]: value})
-                break;
-        }
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit1 = (e) => {
         e.preventDefault();
-        switch (id) {
-            case 'BLOCK1':
-                updateSetting('BLOCK1_TITLE', block1.title)
-                updateSetting('BLOCK1_DESCRIPTION', block1.description)
-                updateSetting('BLOCK1_URL', block1.url)
-                break;
-            case 'BLOCK2':
-                updateSetting('BLOCK2_TITLE', block2.title)
-                updateSetting('BLOCK2_DESCRIPTION', block2.description)
-                updateSetting('BLOCK2_URL', block2.url)
-                break;
-            case 'BLOCK3':
-                updateSetting('BLOCK3_TITLE', block3.title)
-                break;
-            case 'BLOCK4':
-                updateSetting('BLOCK4_TITLE', block4.title)
-                updateSetting('BLOCK4_DESCRIPTION', block4.description)
-                break;
-        }
+        updateSetting('BLOCK1_TITLE', blocks.BLOCK1_TITLE);
+        updateSetting('BLOCK1_DESCRIPTION', blocks.BLOCK1_DESCRIPTION);
+        updateSetting('BLOCK1_URL', blocks.BLOCK1_URL);
+    };
+    const handleSubmit2 = (e) => {
+        e.preventDefault();
+        updateSetting('BLOCK2_TITLE', blocks.BLOCK2_TITLE);
+        updateSetting('BLOCK2_DESCRIPTION', blocks.BLOCK2_DESCRIPTION);
+        updateSetting('BLOCK2_URL', blocks.BLOCK2_URL);
+    };
+    const handleSubmit3 = (e) => {
+        e.preventDefault();
+        updateSetting('BLOCK3_TITLE', blocks.BLOCK3_TITLE);
+    };
+    const handleSubmit4 = (e) => {
+        e.preventDefault();
+        updateSetting('BLOCK4_TITLE', blocks.BLOCK4_TITLE);
+        updateSetting('BLOCK4_DESCRIPTION', blocks.BLOCK4_DESCRIPTION);
     };
 
     return (
@@ -209,60 +169,194 @@ export default function Settings() {
             </form>
             <Divider text="Homepagina"/>
             <ul className="space-y-3">
-                {/*<li className="bg-white overflow-hidden shadow rounded-lg px-6 py-4 max-w-4xl">*/}
-                {/*    <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">*/}
-                {/*        <h3 className="text-lg leading-6 font-medium text-gray-900">{blockName}</h3>*/}
-                {/*    </div>*/}
-                {/*    <form className="px-4 py-5 sm:p-6">*/}
-                {/*        <div className="space-y-8 divide-y divide-gray-200">*/}
-                {/*            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">*/}
-                {/*                {values.title && <div className="sm:col-span-4">*/}
-                {/*                    <TextInput*/}
-                {/*                        label="Titel"*/}
-                {/*                        name="title"*/}
-                {/*                        required={true}*/}
-                {/*                        errorMessage="Titel is een verplicht veld"*/}
-                {/*                        placeholder="De Berber, een vakantie punt"*/}
-                {/*                        value={values.title}*/}
-                {/*                        onChange={onChange}*/}
-                {/*                    />*/}
-
-                {/*                </div>}*/}
-                {/*                {values.description && <div className="sm:col-span-4">*/}
-                {/*                    <TextAreaInput*/}
-                {/*                        label="Beschrijving"*/}
-                {/*                        name="description"*/}
-                {/*                        required={true}*/}
-                {/*                        errorMessage="Beschrijving is een verplicht veld"*/}
-                {/*                        placeholder="De berber is een bedrijf dat zich richt op het leveren van een geweldige tijd."*/}
-                {/*                        value={values.description}*/}
-                {/*                        onChange={onChange}*/}
-                {/*                    />*/}
-                {/*                </div>}*/}
-                {/*                {values.url && <div className="sm:col-span-4">*/}
-                {/*                    <TextInput*/}
-                {/*                        label="Url"*/}
-                {/*                        name="url"*/}
-                {/*                        required={true}*/}
-                {/*                        errorMessage="url is een verplicht veld"*/}
-                {/*                        placeholder="https://www.deberber.nl"*/}
-                {/*                        value={values.url}*/}
-                {/*                        onChange={onChange}*/}
-                {/*                    />*/}
-
-                {/*                </div>}*/}
-                {/*            </div>*/}
-                {/*            <button*/}
-                {/*                type="button"*/}
-                {/*                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"*/}
-                {/*                onClick={handleSubmit}*/}
-                {/*            >*/}
-                {/*                Opslaan*/}
-                {/*            </button>*/}
-                {/*        </div>*/}
-
-                {/*    </form>*/}
-                {/*</li>*/}
+                <li className="bg-white overflow-hidden shadow rounded-lg px-6 py-4 max-w-4xl">
+                    <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Blok 1</h3>
+                    </div>
+                    <form className="px-4 py-5 sm:p-6">
+                        <div className="space-y-8 divide-y divide-gray-200">
+                            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Titel"
+                                        name="BLOCK1_TITLE"
+                                        required={true}
+                                        placeholder="De Berber, een vakantie punt"
+                                        value={blocks.BLOCK1_TITLE}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <TextAreaInput
+                                        label="Beschrijving"
+                                        name="BLOCK1_DESCRIPTION"
+                                        required={true}
+                                        errorMessage="Beschrijving is een verplicht veld"
+                                        placeholder="De berber is een bedrijf dat zich richt op het leveren van een geweldige tijd."
+                                        value={blocks.BLOCK1_DESCRIPTION}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Url"
+                                        name="BLOCK1_URL"
+                                        required={true}
+                                        errorMessage="url is een verplicht veld"
+                                        placeholder="https://www.deberber.nl"
+                                        value={blocks.BLOCK1_URL}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                onClick={handleSubmit1}
+                            > Opslaan </button>
+                        </div>
+                    </form>
+                </li>
+                <li className="bg-white overflow-hidden shadow rounded-lg px-6 py-4 max-w-4xl">
+                    <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Blok 2</h3>
+                    </div>
+                    <form className="px-4 py-5 sm:p-6">
+                        <div className="space-y-8 divide-y divide-gray-200">
+                            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Titel"
+                                        name="BLOCK2_TITLE"
+                                        required={true}
+                                        placeholder="De Berber, een vakantie punt"
+                                        value={blocks.BLOCK2_TITLE}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                            console.log(title);
+                                        }}
+                                    />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <TextAreaInput
+                                        label="Beschrijving"
+                                        name="BLOCK2_DESCRIPTION"
+                                        required={true}
+                                        errorMessage="Beschrijving is een verplicht veld"
+                                        placeholder="De berber is een bedrijf dat zich richt op het leveren van een geweldige tijd."
+                                        value={blocks.BLOCK2_DESCRIPTION}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Url"
+                                        name="BLOCK2_URL"
+                                        required={true}
+                                        errorMessage="url is een verplicht veld"
+                                        placeholder="https://www.deberber.nl"
+                                        value={blocks.BLOCK2_URL}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                onClick={handleSubmit2}
+                            > Opslaan </button>
+                        </div>
+                    </form>
+                </li>
+                <li className="bg-white overflow-hidden shadow rounded-lg px-6 py-4 max-w-4xl">
+                    <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Blok 3</h3>
+                    </div>
+                    <form className="px-4 py-5 sm:p-6">
+                        <div className="space-y-8 divide-y divide-gray-200">
+                            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Titel"
+                                        name="BLOCK3_TITLE"
+                                        required={true}
+                                        placeholder="De Berber, een vakantie punt"
+                                        value={blocks.BLOCK3_TITLE}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                            console.log(title);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                onClick={handleSubmit3}
+                            > Opslaan </button>
+                        </div>
+                    </form>
+                </li>
+                <li className="bg-white overflow-hidden shadow rounded-lg px-6 py-4 max-w-4xl">
+                    <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
+                        <h3 className="text-lg leading-6 font-medium text-gray-900">Blok 4</h3>
+                    </div>
+                    <form className="px-4 py-5 sm:p-6">
+                        <div className="space-y-8 divide-y divide-gray-200">
+                            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div className="sm:col-span-4">
+                                    <TextInput
+                                        label="Titel"
+                                        name="BLOCK4_TITLE"
+                                        required={true}
+                                        placeholder="De Berber, een vakantie punt"
+                                        value={blocks.BLOCK4_TITLE}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <TextAreaInput
+                                        label="Beschrijving"
+                                        name="BLOCK4_DESCRIPTION"
+                                        required={true}
+                                        errorMessage="Beschrijving is een verplicht veld"
+                                        placeholder="De berber is een bedrijf dat zich richt op het leveren van een geweldige tijd."
+                                        value={blocks.BLOCK4_DESCRIPTION}
+                                        onChange={(e) => {
+                                            const {name, value} = e.target;
+                                            setBlocks({...blocks, [name]: value})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                onClick={handleSubmit4}
+                            > Opslaan </button>
+                        </div>
+                    </form>
+                </li>
             </ul>
 
             {confirmGeneral && <ConfirmModal
@@ -273,7 +367,9 @@ export default function Settings() {
                     updateSetting('SITE_TITLE', title)
                     updateSetting('SITE_DESCRIPTION', description)
                 }}
-                onCancel={() => {setConfirmGeneral(false)}}
+                onCancel={() => {
+                    setConfirmGeneral(false)
+                }}
             />}
         </div>
     );
@@ -290,8 +386,5 @@ function updateSetting(name, value) {
             name, value
         })
     }).then(r => {
-        if (r.status === 200) {
-            alert('Gegevens zijn succesvol opgeslagen')
-        }
     })
 }

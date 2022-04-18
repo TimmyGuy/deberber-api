@@ -12,7 +12,7 @@ export default function BackgroundFinder({selectedBackground, setSelectedBackgro
 
     useEffect(() => {
         if(backgrounds.length === 0) {
-            fetch('http://127.0.0.1:8000/api/backgrounds', {
+            fetch('/api/backgrounds', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

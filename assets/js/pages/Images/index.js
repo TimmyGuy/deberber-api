@@ -13,7 +13,7 @@ export default function Images() {
 
     useEffect(() => {
         if(loading) {
-            fetch('http://127.0.0.1:8000/api/images',
+            fetch('/api/images',
                 {
                     method: 'GET',
                     headers: {
@@ -138,7 +138,7 @@ export default function Images() {
                     </div>
                 </aside>}
             </div>
-            {showOverlay && <ImageUploadOverlay title="Upload een afbeelding" description="Upload een afbeelding" setLoading={setLoading} setShowOverlay={setShowOverlay} url="http://127.0.0.1:8000/api/images"/>}
+            {showOverlay && <ImageUploadOverlay title="Upload een afbeelding" description="Upload een afbeelding" setLoading={setLoading} setShowOverlay={setShowOverlay} url="/api/images"/>}
         </>
     )
 }

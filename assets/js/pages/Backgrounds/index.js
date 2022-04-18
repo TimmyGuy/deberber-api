@@ -13,7 +13,7 @@ export default function Backgrounds() {
 
     useEffect(() => {
         if(loading) {
-            fetch('http://127.0.0.1:8000/api/backgrounds',
+            fetch('/api/backgrounds',
                 {
                     method: 'GET',
                     headers: {
@@ -138,7 +138,7 @@ export default function Backgrounds() {
                     </div>
                 </aside>}
             </div>
-            {showOverlay && <ImageUploadOverlay title="Upload een achtergrond" description="Upload een achtergrond" setLoading={setLoading} setShowOverlay={setShowOverlay} url="http://127.0.0.1:8000/api/backgrounds"/>}
+            {showOverlay && <ImageUploadOverlay title="Upload een achtergrond" description="Upload een achtergrond" setLoading={setLoading} setShowOverlay={setShowOverlay} url="/api/backgrounds"/>}
         </>
     )
 }
