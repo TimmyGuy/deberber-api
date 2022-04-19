@@ -1,5 +1,5 @@
 import React from 'react';
-import { LockClosedIcon } from '@heroicons/react/solid'
+import {LockClosedIcon} from '@heroicons/react/solid'
 
 async function loginUser(credentials) {
     return fetch('/api/login', {
@@ -12,12 +12,12 @@ async function loginUser(credentials) {
         .then(res => res.json())
 }
 
-export default function Login({ setToken }) {
+export default function Login({setToken}) {
     const [inputs, setInputs] = React.useState({});
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setInputs({ ...inputs, [name]: value });
+        const {name, value} = e.target;
+        setInputs({...inputs, [name]: value});
     };
 
     const handleSubmit = async (e) => {
@@ -25,6 +25,8 @@ export default function Login({ setToken }) {
         const user = await loginUser(inputs);
         if (user.token) {
             setToken({token: user.token});
+        } else {
+            alert(user.error);
         }
     }
 
@@ -44,7 +46,7 @@ export default function Login({ setToken }) {
                         </p>
                     </div>
                     <form className="mt-8 space-y-6">
-                        <input type="hidden" name="remember" defaultValue="true" />
+                        <input type="hidden" name="remember" defaultValue="true"/>
                         <div className="rounded-md shadow-sm -space-y-px">
                             <div>
                                 <label htmlFor="username" className="sr-only">
@@ -105,7 +107,7 @@ export default function Login({ setToken }) {
                                 onClick={handleSubmit}
                             >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <LockClosedIcon className="h-5 w-5 text-yellow-500 group-hover:text-yellow-400" aria-hidden="true" />
+                  <LockClosedIcon className="h-5 w-5 text-yellow-500 group-hover:text-yellow-400" aria-hidden="true"/>
                 </span>
                                 Sign in
                             </button>

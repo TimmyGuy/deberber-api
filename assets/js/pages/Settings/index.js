@@ -66,68 +66,68 @@ export default function Settings() {
     return (
         <div>
             <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Instellingen</h2>
-            <div className="my-4">
-                <div className="sm:col-span-6">
-                    <label htmlFor="photo" className="block text-sm font-medium text-blue-gray-900">
-                        Logo
-                    </label>
-                    <div className="mt-1 flex items-center">
-                        <img
-                            className="inline-block h-12 w-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"
-                            alt=""
-                        />
-                        <div className="ml-4 flex">
-                            <div
-                                className="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">
-                                <label
-                                    htmlFor="logo-img"
-                                    className="relative text-sm font-medium text-blue-gray-900 pointer-events-none"
-                                >
-                                    <span>Verander</span>
-                                    <span className="sr-only"> logo</span>
-                                </label>
-                                <input
-                                    id="logo-img"
-                                    name="logo-img"
-                                    type="file"
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="sm:col-span-6 mt-2">
-                    <label htmlFor="photo" className="block text-sm font-medium text-blue-gray-900">
-                        Favicon
-                    </label>
-                    <div className="mt-1 flex items-center">
-                        <img
-                            className="inline-block h-12 w-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"
-                            alt=""
-                        />
-                        <div className="ml-4 flex">
-                            <div
-                                className="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">
-                                <label
-                                    htmlFor="favicon-img"
-                                    className="relative text-sm font-medium text-blue-gray-900 pointer-events-none"
-                                >
-                                    <span>Verander</span>
-                                    <span className="sr-only"> favicon</span>
-                                </label>
-                                <input
-                                    id="favicon-img"
-                                    name="favicon-img"
-                                    type="file"
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/*<div className="my-4">*/}
+            {/*    <div className="sm:col-span-6">*/}
+            {/*        <label htmlFor="photo" className="block text-sm font-medium text-blue-gray-900">*/}
+            {/*            Logo*/}
+            {/*        </label>*/}
+            {/*        <div className="mt-1 flex items-center">*/}
+            {/*            <img*/}
+            {/*                className="inline-block h-12 w-12 rounded-full"*/}
+            {/*                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"*/}
+            {/*                alt=""*/}
+            {/*            />*/}
+            {/*            <div className="ml-4 flex">*/}
+            {/*                <div*/}
+            {/*                    className="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">*/}
+            {/*                    <label*/}
+            {/*                        htmlFor="logo-img"*/}
+            {/*                        className="relative text-sm font-medium text-blue-gray-900 pointer-events-none"*/}
+            {/*                    >*/}
+            {/*                        <span>Verander</span>*/}
+            {/*                        <span className="sr-only"> logo</span>*/}
+            {/*                    </label>*/}
+            {/*                    <input*/}
+            {/*                        id="logo-img"*/}
+            {/*                        name="logo-img"*/}
+            {/*                        type="file"*/}
+            {/*                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"*/}
+            {/*                    />*/}
+            {/*                </div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*    <div className="sm:col-span-6 mt-2">*/}
+            {/*        <label htmlFor="photo" className="block text-sm font-medium text-blue-gray-900">*/}
+            {/*            Favicon*/}
+            {/*        </label>*/}
+            {/*        <div className="mt-1 flex items-center">*/}
+            {/*            <img*/}
+            {/*                className="inline-block h-12 w-12 rounded-full"*/}
+            {/*                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"*/}
+            {/*                alt=""*/}
+            {/*            />*/}
+            {/*            <div className="ml-4 flex">*/}
+            {/*                <div*/}
+            {/*                    className="relative bg-white py-2 px-3 border border-blue-gray-300 rounded-md shadow-sm flex items-center cursor-pointer hover:bg-blue-gray-50 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-blue-gray-50 focus-within:ring-blue-500">*/}
+            {/*                    <label*/}
+            {/*                        htmlFor="favicon-img"*/}
+            {/*                        className="relative text-sm font-medium text-blue-gray-900 pointer-events-none"*/}
+            {/*                    >*/}
+            {/*                        <span>Verander</span>*/}
+            {/*                        <span className="sr-only"> favicon</span>*/}
+            {/*                    </label>*/}
+            {/*                    <input*/}
+            {/*                        id="favicon-img"*/}
+            {/*                        name="favicon-img"*/}
+            {/*                        type="file"*/}
+            {/*                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"*/}
+            {/*                    />*/}
+            {/*                </div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
             <Divider text="Site informatie"/>
             <form className="space-y-8 divide-y divide-gray-200">
