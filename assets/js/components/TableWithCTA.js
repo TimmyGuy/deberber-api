@@ -1,9 +1,9 @@
 import React from 'react';
 import Toggle from "./Toggle";
 import {Link} from "react-router-dom";
-import {ExternalLinkIcon} from "@heroicons/react/outline";
+import {ExternalLinkIcon, TrashIcon} from "@heroicons/react/outline";
 
-export function TableWithCTA({items, toggle, type}) {
+export function TableWithCTA({items, toggle, type, onDelete}) {
     return <table className="min-w-full divide-y divide-gray-300">
         <thead className="bg-gray-50">
         <tr>
@@ -48,6 +48,7 @@ export function TableWithCTA({items, toggle, type}) {
                     <Link to={'/'+type+'/' + item.id} className="text-yellow-600 hover:text-yellow-900">
                         Bewerk<span className="sr-only">, {item.title}</span>
                     </Link>
+                    <button onClick={() => onDelete(item)}><TrashIcon className="h-4 w-4 ml-1 text-red-400 hover:text-red-700" /></button>
                 </td>
             </tr>
         )) : <SkeletonLoader />}

@@ -41,7 +41,8 @@ use App\Controller\CreateImageAction;
  *     "get"
  *     },
  *     itemOperations={
- *     "get"
+ *     "get",
+ *     "delete"
  *   }
  * )
  * @ORM\Entity()

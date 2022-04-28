@@ -44,7 +44,8 @@ use App\Controller\CreateBackgroundAction;
  *     "get"
  *     },
  *     itemOperations={
- *     "get"
+ *     "get",
+ *     "delete"
  *   }
  * )
  * @ORM\Entity()

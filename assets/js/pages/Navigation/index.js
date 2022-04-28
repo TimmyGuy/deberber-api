@@ -3,6 +3,7 @@ import CheckBox from "../../ui/Input/CheckBox";
 import Select from "../../ui/Input/Select";
 import {Disclosure} from "@headlessui/react";
 import {ChevronDownIcon} from "@heroicons/react/solid";
+import {PencilAltIcon, TrashIcon} from "@heroicons/react/outline";
 
 const menus = [
     {
@@ -172,27 +173,72 @@ export default function Navigation() {
                                                 if (item.navbar === menu) {
                                                     return (
                                                         <li key={item.id}><Disclosure as="div" className="pt-6">
-                                                            {({open}) => (
-                                                                <>
-                                                                    <dt className="text-lg">
-                                                                        <Disclosure.Button
-                                                                            className="text-left w-full flex justify-between items-start text-gray-400">
+                                                            {({open}) => {
+                                                                return (
+                                                                    <>
+                                                                        <dt className="text-lg">
+                                                                            <Disclosure.Button
+                                                                                className="text-left w-full flex justify-between items-start text-gray-400">
                                                                 <span
                                                                     className="font-medium text-gray-900">{item.name}</span>
-                                                                            <span
-                                                                                className="ml-6 h-7 flex items-center">
+                                                                                <span
+                                                                                    className="ml-6 h-7 flex items-center">
                           <ChevronDownIcon
                               className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform transition-transform duration-200')}
                               aria-hidden="true"
                           />
                         </span>
-                                                                        </Disclosure.Button>
-                                                                    </dt>
-                                                                    <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                                                                        <p className="text-base text-gray-500">{item.href}</p>
-                                                                    </Disclosure.Panel>
-                                                                </>
-                                                            )}
+                                                                            </Disclosure.Button>
+                                                                        </dt>
+                                                                        <Disclosure.Panel as="dd"
+                                                                                          className="mt-2 pr-12">
+                                                                            <button
+                                                                                type="button"
+                                                                                className="mr-1 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                                                                onClick={() => {
+                                                                                    let newName = prompt("Hernoem item")
+                                                                                    let newItem = {...item, name: newName}
+                                                                                    fetch('/api/navigations/' + item.id, {
+                                                                                        method: "PUT",
+                                                                                        headers: {
+                                                                                            'Content-Type': 'application/json',
+                                                                                            'Accept': 'application/json'
+                                                                                        },
+                                                                                        body: JSON.stringify(newItem)
+                                                                                    }).then(r => {
+                                                                                        setLoading(true);
+                                                                                    })
+                                                                                }}
+                                                                            >
+                                                                                <PencilAltIcon
+                                                                                    className="-ml-0.5 mr-2 h-4 w-4"
+                                                                                    aria-hidden="true"/>
+                                                                                Verander naam
+                                                                            </button>
+                                                                            <button
+                                                                                type="button"
+                                                                                className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                                                                onClick={() => {
+                                                                                    fetch('/api/navigations/' + item.id, {
+                                                                                        method: "DELETE"
+                                                                                    }).then(r => {
+                                                                                        if (r.status === 404) {
+                                                                                            alert("Er is iets fout gegaan!");
+                                                                                        } else {
+                                                                                            setLoading(true);
+                                                                                        }
+                                                                                    })
+                                                                                }}
+                                                                            >
+                                                                                <TrashIcon
+                                                                                    className="-ml-0.5 mr-2 h-4 w-4"
+                                                                                    aria-hidden="true"/>
+                                                                                Verwijder
+                                                                            </button>
+                                                                        </Disclosure.Panel>
+                                                                    </>
+                                                                )
+                                                            }}
                                                         </Disclosure></li>
                                                     )
                                                 }

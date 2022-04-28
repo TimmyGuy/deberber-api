@@ -31,6 +31,20 @@ export function Collection() {
             });
     }
 
+    const deleteItem = (item) => {
+        if(confirm("Weet je zeker dat je dit item wilt verwijderen?")) {
+            fetch('/api/pages/' + item.id, {
+                method: "DELETE"
+            }).then(r => {
+                if(r.status === 404) {
+                    alert("Er is iets fout gegaan!");
+                } else {
+                    setLoaded(false);
+                }
+            })
+        }
+    }
+
     return (
         <div>
             <div className="sm:flex sm:items-center">
@@ -54,7 +68,7 @@ export function Collection() {
                 <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                            {<TableWithCTA items={pages} toggle={togglePublished} type='page' />}
+                            {<TableWithCTA items={pages} toggle={togglePublished} onDelete={deleteItem} type='page' />}
                         </div>
                     </div>
                 </div>
