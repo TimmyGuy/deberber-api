@@ -10,6 +10,7 @@ import useToken from "./hooks/useToken";
 import Login from "./pages/Login";
 import {Page, PageEdit, PageNew} from "./pages/Page";
 import Images from "./pages/Images";
+import {Events, NewEvent} from "./pages/Events";
 
 function App() {
     const [token, setToken] = useToken();
@@ -36,6 +37,8 @@ function App() {
                     <Route path="page/new" element={<PageNew/>}/>
                     <Route path="/images" element={<Images/>}/>
                     <Route path="/backgrounds" element={<Backgrounds/>}/>
+                    <Route path="/events" element={<Events/>}/>
+                    <Route path="/events/new" element={<NewEvent/>}/>
                 </Routes>
             </Sidebar>
         </BrowserRouter>

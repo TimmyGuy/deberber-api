@@ -17,6 +17,7 @@ use App\Controller\CreateBackgroundAction;
  *     normalizationContext={"groups"={"background_read"}},
  *     collectionOperations={
  *          "post"={
+ *              "security"="is_granted('ROLE_ADMIN')",
  *              "controller"=CreateBackgroundAction::class,
  *              "deserialize"=false,
  *              "validation_groups"={"Default", "background_create"},
@@ -45,7 +46,7 @@ use App\Controller\CreateBackgroundAction;
  *     },
  *     itemOperations={
  *     "get",
- *     "delete"
+ *     "delete"={"security"="is_granted('ROLE_ADMIN')"}
  *   }
  * )
  * @ORM\Entity()

@@ -2,7 +2,7 @@ import React from 'react';
 import {LockClosedIcon} from '@heroicons/react/solid'
 
 async function loginUser(credentials) {
-    return fetch('/api/login', {
+    return fetch('/authentication_token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export default function Login({setToken}) {
         if (user.token) {
             setToken({token: user.token});
         } else {
-            alert(user.error);
+            alert(user.message);
         }
     }
 
@@ -38,7 +38,7 @@ export default function Login({setToken}) {
                         <img
                             className="mx-auto h-12 w-auto"
                             src="https://deberber.nl/logo.png"
-                            alt="Workflow"
+                            alt="De Berber"
                         />
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in op</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
@@ -54,7 +54,7 @@ export default function Login({setToken}) {
                                 </label>
                                 <input
                                     id="username"
-                                    name="username"
+                                    name="email"
                                     type="email"
                                     autoComplete="email"
                                     required

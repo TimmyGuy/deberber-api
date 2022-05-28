@@ -11,7 +11,8 @@ import {
     PhotographIcon,
     CubeTransparentIcon,
     CogIcon,
-    BookmarkAltIcon
+    BookmarkAltIcon,
+    CalendarIcon
 } from '@heroicons/react/outline'
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 
@@ -27,6 +28,9 @@ const contentNavigation = [
 const mediaNavigation = [
     { name: 'Afbeeldingen', href: '/images', icon: PhotographIcon, current: false },
     { name: 'Achtergronden', href: '/backgrounds', icon: CubeTransparentIcon, current: false }
+]
+const bookingNavigation = [
+    { name: 'Evenementen', href: '/events', icon: CalendarIcon, current: false}
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
@@ -138,6 +142,14 @@ export default function Sidebar({children}) {
                                                 <NavItem key={item.name} item={item}/>
                                             ))}
                                         </div>
+                                        <div className="mt-8">
+                                            <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="projects-headline">
+                                                Booking
+                                            </h3>
+                                            {bookingNavigation.map((item) => (
+                                                <NavItem key={item.name} item={item}/>
+                                            ))}
+                                        </div>
                                     </nav>
                                 </div>
                             </div>
@@ -175,6 +187,14 @@ export default function Sidebar({children}) {
                                         Media
                                     </h3>
                                     {mediaNavigation.map((item) => (
+                                        <NavItem key={item.name} item={item}/>
+                                    ))}
+                                </div>
+                                <div className="mt-8">
+                                    <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="projects-headline">
+                                        Booking
+                                    </h3>
+                                    {bookingNavigation.map((item) => (
                                         <NavItem key={item.name} item={item}/>
                                     ))}
                                 </div>
