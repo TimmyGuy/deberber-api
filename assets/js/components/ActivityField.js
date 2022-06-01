@@ -17,7 +17,7 @@ export default function ActivityField({createActivity}) {
     return (
         <div className="relative">
             <div
-                className="border border-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                className="border border-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-yellow-500 focus-within:ring-1 focus-within:ring-yellow-500">
                 <label htmlFor="name" className="sr-only">
                     Naam activiteit
                 </label>
@@ -66,7 +66,7 @@ export default function ActivityField({createActivity}) {
                             <span className="text-gray-500 sm:text-sm">€</span>
                         </div>
                         <input
-                            type="text"
+                            type="number"
                             name="price"
                             id="price"
                             className="block w-full border-0 pt-2.5 text-lg font-medium placeholder-gray-500 focus:ring-0"
@@ -80,9 +80,9 @@ export default function ActivityField({createActivity}) {
                     <div className="flex-shrink-0">
                         <button
                             type="button"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                             onClick={onSubmit}>
-                            Create
+                            Aanmaken
                         </button>
                     </div>
                 </div>

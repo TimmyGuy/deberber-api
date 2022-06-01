@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import CondensedTable from "../../components/CondensedTable";
 import ActivityField from "../../components/ActivityField";
+import {headers, createActivity, createEvent} from "./EventFunctions";
+
 
 export function New() {
-    const headers = [
-        {field: 'name', name: 'Naam'},
-        {field: 'description', name: 'Omschrijving'},
-        {field: 'price', name: 'Prijs'}
-    ]
     const [values, setValues] = useState({events: []});
     const deleteAction = (deletableAction) => {
         setValues({...values, events: values.events.filter(event => event !== deletableAction)});
@@ -23,10 +20,24 @@ export function New() {
             onClick: deleteAction
         }
     }
-    const onSubmit = (event) => {
-        event.preventDefault();
+    const onSubmit = (e) => {
+        let event = {};
+        e.preventDefault();
         // Submit to server
-        console.log(values);
+        if(values.name && values.description && values.price) {
+            event = createEvent({
+                name: values.name,
+                description: values.description,
+                price: parseInt(values.price),
+                startDate: values.startDate,
+                endDate: values.endDate
+            });
+            event.then(event => {
+                values.events.forEach(activity => {
+                    createActivity(activity, event);
+                })
+            });
+        }
     }
 
     return (
@@ -112,10 +123,10 @@ export function New() {
                                         <span className="text-gray-500 sm:text-sm">€</span>
                                     </div>
                                     <input
-                                        type="text"
+                                        type="number"
                                         name="price"
                                         id="price"
-                                        className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                                        className="focus:ring-yellow-500 focus:border-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                                         placeholder="0.00"
                                         aria-describedby="price-currency"
                                         onChange={onChange}
@@ -129,9 +140,16 @@ export function New() {
                                 </div>
                             </div>
                         </div>
-                        <CondensedTable values={values.events} headers={headers} actions={actions}/>
+                        {values.events.length !== 0 && <CondensedTable values={values.events} headers={headers} actions={actions}/>}
                     </div>
                     <ActivityField createActivity={addAction}/>
+                    <button
+                        type="submit"
+                        onClick={onSubmit}
+                        className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                    >
+                        Bewaar
+                    </button>
                 </div>
             </div>
         </form>

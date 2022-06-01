@@ -9,7 +9,7 @@ const headings = [
     },
     {
         name: 'Titel',
-        field: 'title'
+        field: 'name'
     },
     {
         name: 'Begin datum',

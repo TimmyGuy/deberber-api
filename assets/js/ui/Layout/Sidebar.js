@@ -12,7 +12,7 @@ import {
     CubeTransparentIcon,
     CogIcon,
     BookmarkAltIcon,
-    CalendarIcon
+    CalendarIcon, CreditCardIcon
 } from '@heroicons/react/outline'
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 
@@ -30,7 +30,8 @@ const mediaNavigation = [
     { name: 'Achtergronden', href: '/backgrounds', icon: CubeTransparentIcon, current: false }
 ]
 const bookingNavigation = [
-    { name: 'Evenementen', href: '/events', icon: CalendarIcon, current: false}
+    { name: 'Evenementen', href: '/events', icon: CalendarIcon, current: false},
+    { name: 'Reserveringen', href: '/bookings', icon: CreditCardIcon, current: false }
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },

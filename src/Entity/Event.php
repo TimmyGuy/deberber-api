@@ -51,6 +51,8 @@ class Event
      */
     private $eventActivities;
 
+    private $activities;
+
     public function __construct()
     {
         $this->eventActivities = new ArrayCollection();
@@ -149,5 +151,15 @@ class Event
         }
 
         return $this;
+    }
+
+    public function getActivities()
+    {
+        return $this->activities;
+    }
+
+    public function setActivities($activities)
+    {
+        $this->activities = $activities;
     }
 }

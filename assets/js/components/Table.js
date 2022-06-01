@@ -13,28 +13,26 @@ export function Table({items, onDelete, headings, type}) {
                 </th>
                 ))}
             <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span className="sr-only">Bewerken</span>
+                <span className="sr-only">Acties</span>
             </th>
         </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-        {items.length > 0 ? items.map((item) => (
-            <tr key={item.id}>
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                    {item.title}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <a href={"https://www.deberber.nl/"+(type === 'blog' ? 'blog/' : '')+item.slug} className="flex">
-                        {item.slug}
-                        <ExternalLinkIcon className="h-3 w-3 ml-1" />
-                    </a>
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.date}</td>
+        {items.length > 0 ? items.map((value, idx) => (
+            <tr key={idx}>
+                {headings.map((header, idx) => (
+                    <td
+                        key={idx}
+                        className="px-2 py-3.5"
+                    >
+                        {value[header.field]}
+                    </td>
+                ))}
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <Link to={'/'+type+'/' + item.id} className="text-yellow-600 hover:text-yellow-900">
-                        Bewerk<span className="sr-only">, {item.title}</span>
+                    <Link to={'/'+type+'/' + value.id} className="text-yellow-600 hover:text-yellow-900">
+                        Bewerk<span className="sr-only">, {value.title}</span>
                     </Link>
-                    <button onClick={() => onDelete(item)}><TrashIcon className="h-4 w-4 ml-1 text-red-400 hover:text-red-700" /></button>
+                    <button onClick={() => onDelete(value)}><TrashIcon className="h-4 w-4 ml-1 text-red-400 hover:text-red-700" /></button>
                 </td>
             </tr>
         )) : <SkeletonLoader list={headings} />}

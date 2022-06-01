@@ -2,11 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {TableWithCTA} from "../../components/TableWithCTA";
 import {Link} from "react-router-dom";
 
-// const blogs = [
-//     { id: 1, title: 'Mijn eerste blogpost!', slug: 'mijn-eerste-blogpost', date: '2022-03-04 11:21', published: 1 },
-//     // More blogs...
-// ]
-
 export function Collection() {
     const [blogs, setBlogs] = useState([]);
     const [loaded, setLoaded] = useState(false);
