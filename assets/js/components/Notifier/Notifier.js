@@ -1,6 +1,7 @@
 import React from 'react';
 import LoadingNotification from "../../ui/Notification/LoadingNotification";
 import SuccessNotification from "../../ui/Notification/SuccessNotification";
+import FailureNotification from "../../ui/Notification/FailureNotification";
 
 export default function Notifier({notifications}) {
 
@@ -10,6 +11,8 @@ export default function Notifier({notifications}) {
                 return <LoadingNotification key={notification.id} notification={notification}/>;
             case 'success':
                 return <SuccessNotification key={notification.id} notification={notification}/>;
+            case 'failure':
+                return <FailureNotification key={notification.id} notification={notification}/>;
             default:
                 return null;
         }

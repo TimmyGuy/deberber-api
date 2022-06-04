@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import CondensedTable from "../../components/CondensedTable";
 import ActivityField from "../../components/ActivityField";
-import {getFromApi, headers, createActivity, createEvent, updateEvent} from "./EventFunctions";
+import {headers, createActivity, updateEvent, getFromApi} from "./EventFunctions";
 import {useParams} from "react-router-dom";
+import {ADD, useNotificationContext} from "../../contexts/NotificationContext";
 
 
 export function Edit() {
     let params = useParams();
+    const {dispatch} = useNotificationContext();
     const [values, setValues] = useState({events: []});
     const [loading, setLoading] = useState(true);
+
     const deleteAction = (deletableAction) => {
         setValues({...values, events: values.events.filter(event => event !== deletableAction)});
     }
@@ -28,35 +31,65 @@ export function Edit() {
         e.preventDefault();
         // Submit to server
         if (values.name && values.description && values.price) {
+            let activities = [];
+            values.events.forEach(activity => {
+                if(activity.id) {
+                    activities.push('\/api\/activities\/' + activity.id);
+                }
+            })
+
             event = updateEvent({
+                id: values.id,
                 name: values.name,
                 description: values.description,
                 price: parseInt(values.price),
                 startDate: values.startDate,
-                endDate: values.endDate
+                endDate: values.endDate,
+                tents: parseInt(values.tents)
             });
             event.then(event => {
                 values.events.forEach(activity => {
-                    createActivity(activity, event);
+                    if(!activity.id) {
+                        createActivity(activity, event);
+                    }
                 })
-            });
+            })
+                .then(() => dispatch({type: ADD,
+                    payload: {
+                        title: 'Evenement is bijgewerkt',
+                        description: 'Je evenement is succesvol bijgewerkt.',
+                        type: 'success'
+                    }
+                }));
         }
     }
 
     useEffect(() => {
         if (loading) {
             fetch('/api/events/' + params.id)
-                .then(res => res.json())
-                .then(data => {
-                    setValues({
-                        name: data.name,
-                        description: data.description,
-                        price: data.price,
-                        startDate: data.startDate.substring(0, data.startDate.indexOf('+')),
-                        endDate: data.endDate.substring(0, data.endDate.indexOf('+')),
-                        events: data.activities
-                    });
-                    setLoading(false);
+                .then(res => {
+                    if(res.ok) {
+                        res.json()
+                            .then(data => {
+                                setValues({
+                                    id: data.id,
+                                    name: data.name,
+                                    description: data.description,
+                                    price: data.price,
+                                    startDate: data.startDate.substring(0, data.startDate.indexOf('+')),
+                                    endDate: data.endDate.substring(0, data.endDate.indexOf('+')),
+                                    events: [],
+                                    tents: data.tents
+                                });
+                                data.activities.forEach(event => {
+                                    getFromApi(event)
+                                        .then(activity => {
+                                            setValues(values => ({...values, events: [...values.events, activity]}));
+                                        })
+                                })
+                            })
+                            .then(() => setLoading(false));
+                    }
                 })
         }
     })
@@ -67,9 +100,9 @@ export function Edit() {
                 <div className="space-y-8 divide-y divide-gray-200 w-full md:w-4/6">
                     <div>
                         <div>
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">Evenement maken</h3>
+                            <h3 className="text-lg leading-6 font-medium text-gray-900">Evenement bijwerken</h3>
                             <p className="mt-1 text-sm text-gray-500">
-                                Maak een evenement aan waar mensen zich kunnen aanmelden.
+                                Update een evenement aan waar mensen zich kunnen aanmelden.
                             </p>
                         </div>
 
@@ -164,6 +197,23 @@ export function Edit() {
                                             EUR
                                         </span>
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="sm:col-span-8">
+                                    <label htmlFor="tents" className="block text-sm font-medium text-gray-700">
+                                        Tenten
+                                    </label>
+                                    <div className="mt-1 relative rounded-md shadow-sm">
+                                        <input
+                                            type="number"
+                                            name="tents"
+                                            id="tents"
+                                            className="focus:ring-yellow-500 focus:border-yellow-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="1"
+                                            aria-describedby="tents"
+                                            onChange={onChange}
+                                            value={values.tents}
+                                        />
                                     </div>
                                 </div>
                             </div>

@@ -139,6 +139,22 @@ export function New() {
                                     </div>
                                 </div>
                             </div>
+                            <div className="sm:col-span-8">
+                                <label htmlFor="tents" className="block text-sm font-medium text-gray-700">
+                                    Tenten
+                                </label>
+                                <div className="mt-1 relative rounded-md shadow-sm">
+                                    <input
+                                        type="number"
+                                        name="tents"
+                                        id="tents"
+                                        className="focus:ring-yellow-500 focus:border-yellow-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                        placeholder="1"
+                                        aria-describedby="tents"
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         {values.events.length !== 0 && <CondensedTable values={values.events} headers={headers} actions={actions}/>}
                     </div>

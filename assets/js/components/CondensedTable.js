@@ -73,7 +73,7 @@ export default function CondensedTable({headers, values, actions}) {
         }
         if (actions.delete.onClick) {
             return (
-                <button onClick={() => actions.delete.onClick(activity)} className="text-red-600 hover:text-red-900">
+                <button onClick={() => actions.delete.onClick(activity)} type={"button"} className="text-red-600 hover:text-red-900">
                     Verwijder
                 </button>
             )

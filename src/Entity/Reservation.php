@@ -3,16 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\EventRepository;
+use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass=EventRepository::class)
+ * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
-class Event
+class Reservation
 {
     /**
      * @ORM\Id
@@ -22,14 +22,16 @@ class Event
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="reservations")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $event;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $description;
+    private $user;
 
     /**
      * @ORM\Column(type="date")
@@ -42,9 +44,19 @@ class Event
     private $endDate;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=40)
      */
-    private $price;
+    private $status;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $adults;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $children;
 
     /**
      * @ORM\Column(type="integer")
@@ -52,18 +64,22 @@ class Event
     private $tents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="event")
+     * @ORM\Column(type="float")
      */
-    private $reservations;
+    private $price;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="events")
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $message;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="reservations")
      */
     private $activities;
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
         $this->activities = new ArrayCollection();
     }
 
@@ -72,26 +88,26 @@ class Event
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getEvent(): ?Event
     {
-        return $this->name;
+        return $this->event;
     }
 
-    public function setName(string $name): self
+    public function setEvent(?Event $event): self
     {
-        $this->name = $name;
+        $this->event = $event;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getUser(): ?User
     {
-        return $this->description;
+        return $this->user;
     }
 
-    public function setDescription(?string $description): self
+    public function setUser(?User $user): self
     {
-        $this->description = $description;
+        $this->user = $user;
 
         return $this;
     }
@@ -120,14 +136,38 @@ class Event
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getStatus(): ?string
     {
-        return $this->price;
+        return $this->status;
     }
 
-    public function setPrice(?float $price): self
+    public function setStatus(string $status): self
     {
-        $this->price = $price;
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAdults(): ?int
+    {
+        return $this->adults;
+    }
+
+    public function setAdults(int $adults): self
+    {
+        $this->adults = $adults;
+
+        return $this;
+    }
+
+    public function getChildren(): ?int
+    {
+        return $this->children;
+    }
+
+    public function setChildren(int $children): self
+    {
+        $this->children = $children;
 
         return $this;
     }
@@ -144,32 +184,26 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
+    public function getPrice(): ?float
     {
-        return $this->reservations;
+        return $this->price;
     }
 
-    public function addReservation(Reservation $reservation): self
+    public function setPrice(float $price): self
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations[] = $reservation;
-            $reservation->setEvent($this);
-        }
+        $this->price = $price;
 
         return $this;
     }
 
-    public function removeReservation(Reservation $reservation): self
+    public function getMessage(): ?string
     {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getEvent() === $this) {
-                $reservation->setEvent(null);
-            }
-        }
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
 
         return $this;
     }
@@ -186,7 +220,7 @@ class Event
     {
         if (!$this->activities->contains($activity)) {
             $this->activities[] = $activity;
-            $activity->addEvent($this);
+            $activity->addReservation($this);
         }
 
         return $this;
@@ -195,7 +229,7 @@ class Event
     public function removeActivity(Activity $activity): self
     {
         if ($this->activities->removeElement($activity)) {
-            $activity->removeEvent($this);
+            $activity->removeReservation($this);
         }
 
         return $this;

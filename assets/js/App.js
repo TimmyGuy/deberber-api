@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import {Page, PageEdit, PageNew} from "./pages/Page";
 import Images from "./pages/Images";
 import {EditEvent, Events, NewEvent} from "./pages/Events";
-import {Booking, Bookings} from "./pages/bookings";
+import {Booking, Bookings} from "./pages/Bookings";
 
 function App() {
     const [token, setToken] = useToken();

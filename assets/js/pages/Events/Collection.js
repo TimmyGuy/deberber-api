@@ -35,6 +35,11 @@ export function Collection() {
             })
                 .then(res => res.json())
                 .then(data => {
+                    // Change in data all dates to readable format
+                    data.forEach(event => {
+                        event.startDate = new Date(event.startDate).toLocaleDateString();
+                        event.endDate = new Date(event.endDate).toLocaleDateString();
+                    })
                     setEvents(data);
                     setLoaded(true);
                 });

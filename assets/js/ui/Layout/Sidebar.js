@@ -31,7 +31,7 @@ const mediaNavigation = [
 ]
 const bookingNavigation = [
     { name: 'Evenementen', href: '/events', icon: CalendarIcon, current: false},
-    { name: 'Reserveringen', href: '/bookings', icon: CreditCardIcon, current: false }
+    { name: 'Reserveringen', href: '/Bookings', icon: CreditCardIcon, current: false }
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },

@@ -3,17 +3,7 @@ import Editor from "../../components/Editor/Editor";
 import BackgroundFinder from "../../components/BackgroundFinder";
 import {useParams} from "react-router-dom";
 import {ADD, useNotificationContext} from "../../contexts/NotificationContext";
-
-async function getFromApi(uri) {
-    return fetch(uri, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-    })
-        .then(response => response.json())
-        .then(data => data);
-}
+import {getFromApi} from "../Events/EventFunctions";
 
 export function Edit() {
     let params = useParams();
