@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Editor from "../../components/Editor/Editor";
 import BackgroundFinder from "../../components/BackgroundFinder";
+import {ADD} from "../../contexts/NotificationContext";
 
 export function New() {
     const [inputs, setInputs] = useState({slug: ''});
@@ -93,12 +94,13 @@ export function New() {
                     ...inputs,
                     content: data,
                     thumbnail: '\/api\/images\/'+ image.id,
-                    background: '\/api\/backgrounds\/'+ selectedBackground.id
+                    background: selectedBackground ? '\/api\/backgrounds\/' + selectedBackground.id : null
                 }),
             })
                 .then(res => res.json())
                 .then(res => {
                     setLoading(false);
+                    dispatch({type: ADD, payload: {title: 'Blog aangemaakt', description: 'De blog is succesvol aangemaakt.', type: 'success'}});
                     if (res.success) {
                         window.location.href = '/blog/' + res.id;
                     }

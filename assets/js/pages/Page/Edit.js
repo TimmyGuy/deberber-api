@@ -37,7 +37,9 @@ export function Edit() {
                     setLoadingPage(false);
                     setInputs(data);
                     setEditorData(JSON.parse(data.content));
-                    setSelectedBackground(await getFromApi(data.background));
+                    if(data.background) {
+                        setSelectedBackground(await getFromApi(data.background));
+                    }
                 })
                 .catch(err => console.log(err));
 
@@ -101,7 +103,7 @@ export function Edit() {
             body: JSON.stringify({
                 ...inputs,
                 content: data,
-                background: '\/api\/backgrounds\/' + selectedBackground.id
+                background: selectedBackground ? '\/api\/backgrounds\/' + selectedBackground.id : null
             }),
         })
             .then(res => res.json())

@@ -38,7 +38,9 @@ export function Edit() {
                     setLoadingPage(false);
                     setInputs(data);
                     setEditorData(JSON.parse(data.content));
-                    setSelectedBackground(await getFromApi(data.background));
+                    if(data.background) {
+                        setSelectedBackground(await getFromApi(data.background));
+                    }
                     let tmpThumbnail = await getFromApi(data.thumbnail);
                     document.getElementById('thumbnail-preview').src = tmpThumbnail.contentUrl;
                 })
@@ -126,7 +128,7 @@ export function Edit() {
                 body: JSON.stringify({
                     ...inputs,
                     content: data,
-                    background: '\/api\/backgrounds\/'+ selectedBackground.id
+                    background: selectedBackground ? '\/api\/backgrounds\/' + selectedBackground.id : null
                 }),
             })
                 .then(res => res.json())
@@ -174,9 +176,9 @@ export function Edit() {
                 <div className="space-y-8 divide-y divide-gray-200 w-full md:w-4/6">
                     <div>
                         <div>
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">Blog maken</h3>
+                            <h3 className="text-lg leading-6 font-medium text-gray-900">Blog bewerken</h3>
                             <p className="mt-1 text-sm text-gray-500">
-                                Dit is de pagina zoals hij op je website zal verschijnen.
+                                Verander de blog pagina
                             </p>
                         </div>
 

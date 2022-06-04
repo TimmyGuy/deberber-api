@@ -53,6 +53,11 @@ class Event
 
     private $activities;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $tents;
+
     public function __construct()
     {
         $this->eventActivities = new ArrayCollection();
@@ -161,5 +166,17 @@ class Event
     public function setActivities($activities)
     {
         $this->activities = $activities;
+    }
+
+    public function getTents(): ?int
+    {
+        return $this->tents;
+    }
+
+    public function setTents(int $tents): self
+    {
+        $this->tents = $tents;
+
+        return $this;
     }
 }

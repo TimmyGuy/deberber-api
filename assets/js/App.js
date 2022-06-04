@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import {Page, PageEdit, PageNew} from "./pages/Page";
 import Images from "./pages/Images";
 import {EditEvent, Events, NewEvent} from "./pages/Events";
+import {Booking, Bookings} from "./pages/bookings";
 
 function App() {
     const [token, setToken] = useToken();
@@ -40,7 +41,8 @@ function App() {
                     <Route path="/events" element={<Events/>}/>
                     <Route path="/events/new" element={<NewEvent/>}/>
                     <Route path="/events/:id" element={<EditEvent/>}/>
-                    <Route path="/bookings" element={<p>Bookings (komt bij bookingsysteem)</p>}/>
+                    <Route path="/bookings" element={<Bookings/>}/>
+                    <Route path="/booking/:id" element={<Booking/>}/>
                 </Routes>
             </Sidebar>
         </BrowserRouter>

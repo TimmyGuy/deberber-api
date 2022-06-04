@@ -107,6 +107,7 @@ export default function Navigation() {
                 })
         })
         getNavItems();
+        setSelectedItems([])
     }
 
     return (
@@ -133,8 +134,9 @@ export default function Navigation() {
                                     {pages.map(page => {
                                         if (!navItems.find(item => (item.href === page.slug) && (item.navbar === menu))) {
                                             return (
-                                                <CheckBox label={page.title} name={page.slug}
-                                                          subText={"(" + page.type + ")"} key={page.slug}
+                                                <div key={page.slug}>
+                                                    <CheckBox label={page.title} name={page.slug}
+                                                          subText={"(" + page.type + ")"}
                                                           onChange={(e) => {
                                                               if (e.target.checked) {
                                                                   setSelectedItems(oldItems => oldItems.concat(page));
@@ -142,6 +144,7 @@ export default function Navigation() {
                                                                   setSelectedItems(oldItems => oldItems.filter(item => item.slug !== page.slug));
                                                               }
                                                           }}/>
+                                                </div>
                                             )
                                         }
                                     })}
@@ -197,7 +200,10 @@ export default function Navigation() {
                                                                                 className="mr-1 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                                                                                 onClick={() => {
                                                                                     let newName = prompt("Hernoem item")
-                                                                                    let newItem = {...item, name: newName}
+                                                                                    let newItem = {
+                                                                                        ...item,
+                                                                                        name: newName
+                                                                                    }
                                                                                     fetch('/api/navigations/' + item.id, {
                                                                                         method: "PUT",
                                                                                         headers: {
@@ -206,7 +212,7 @@ export default function Navigation() {
                                                                                         },
                                                                                         body: JSON.stringify(newItem)
                                                                                     }).then(r => {
-                                                                                        setLoading(true);
+                                                                                        getNavItems()
                                                                                     })
                                                                                 }}
                                                                             >
@@ -225,7 +231,7 @@ export default function Navigation() {
                                                                                         if (r.status === 404) {
                                                                                             alert("Er is iets fout gegaan!");
                                                                                         } else {
-                                                                                            setLoading(true);
+                                                                                            getNavItems()
                                                                                         }
                                                                                     })
                                                                                 }}

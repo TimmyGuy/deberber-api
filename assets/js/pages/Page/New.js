@@ -67,13 +67,16 @@ export function New() {
             body: JSON.stringify({
                 ...inputs,
                 content: data,
-                background: '\/api\/backgrounds\/' + selectedBackground.id
+                background: selectedBackground ? '\/api\/backgrounds\/' + selectedBackground.id : null
             }),
         })
             .then(res => res.json())
             .then(res => {
                 setLoading(false);
                 dispatch({type: ADD, payload: {title: 'Pagina aangemaakt', description: 'De pagina is succesvol aangemaakt.', type: 'success'}});
+                if (res.success) {
+                    window.location.href = '/page/' + res.id;
+                }
             })
             .catch(err => {
                 setLoading(false);
