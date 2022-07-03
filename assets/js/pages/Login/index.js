@@ -54,8 +54,8 @@ export default function Login({setToken}) {
                                 </label>
                                 <input
                                     id="username"
-                                    name="email"
-                                    type="email"
+                                    name="username"
+                                    type="text"
                                     autoComplete="email"
                                     required
                                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"

@@ -1,46 +1,116 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
     CheckIcon, ClockIcon, ThumbDownIcon,
-    ThumbUpIcon,
+    XIcon,
 } from '@heroicons/react/solid'
+import {useParams} from "react-router-dom";
+import {getFromApi} from "../Events/EventFunctions";
+import {TicketIcon} from "@heroicons/react/outline";
 
 const eventTypes = {
-    open: {icon: ClockIcon, bgColorClass: 'bg-gray-400'},
-    pending: {icon: ThumbUpIcon, bgColorClass: 'bg-blue-500'},
-    confirmed: {icon: CheckIcon, bgColorClass: 'bg-green-500'},
+    open: {icon: XIcon, bgColorClass: 'bg-gray-400'},
+    pending: {icon: ClockIcon, bgColorClass: 'bg-blue-500'},
+    paid: {icon: CheckIcon, bgColorClass: 'bg-green-500'},
     failed: {icon: ThumbDownIcon, bgColorClass: 'bg-red-500'},
 }
 
 const steps = [
-    'open', 'pending', 'confirmed'
+    'open', 'pending', 'paid'
 ]
-
-const reservation = {
-    id: 1,
-    user: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '+1 (555) 555-5555',
-    },
-    event: {
-        name: 'Groningse Grachten',
-    },
-    startDate: '2020-09-20',
-    endDate: '2020-09-22',
-    status: 'pending',
-    adults: 2,
-    children: 1,
-    price: 80.50,
-    tents: 1,
-    message: 'Het lijkt ons super leuk om een weekende met je te maken!',
-}
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export function View() {
+    const params = useParams();
+    const [reservation, setReservation] = React.useState({
+        id: 0,
+        user: {
+            name: '',
+            email: '',
+            phone: '',
+        },
+        event: {
+            name: '',
+        },
+        startDate: '',
+        endDate: '',
+        status: '',
+        adults: 0,
+        children: 0,
+        price: 0,
+        tents: 0,
+        message: '',
+    })
+    const [activities, setActivities] = React.useState([]);
+
+    useEffect(() => {
+            fetch(`/api/reservations/${params.id}`, {
+                headers: {
+                    'Accept': 'application/json',
+                }
+            })
+                .then(res => {
+                    if(res.ok) {
+                        res.json().then(data => {
+                            getFromApi(data.event)
+                                .then(event => {
+                                    setReservation({
+                                        ...data,
+                                        event: event,
+                                    })
+                                })
+                            data.activities.forEach(activity => {
+                                getFromApi(activity)
+                                    .then(activity => {
+                                        setActivities(activities => [...activities, activity])
+                                    })
+                            })
+                        })
+                    }
+                })
+    }, [])
+
+    const denyOffer = () => {
+        fetch(`/api/reservations/${reservation.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                status: 'failed',
+            })
+        })
+            .then(() => {
+                setReservation(reservation => ({...reservation, status: 'failed'}))
+            })
+    }
+
+    const confirmOffer = () => {
+        fetch(`/api/reservations/${reservation.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: reservation.id,
+                status: 'pending',
+                price: reservation.price,
+            })
+            })
+            .then(res => {
+                if (res.ok) {
+                    res.json().then(data => {
+                        setReservation(data)
+                    })
+                }
+            })
+    }
+
     return (
         <main className="py-10">
             {/* Page header */}
@@ -48,31 +118,33 @@ export function View() {
                 className="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                 <div className="flex items-center space-x-5">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">{reservation.user.name}</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">{reservation.user.fullName}</h1>
                         <p className="text-sm font-medium text-gray-500">
                             Wil reserververen voor{' '}
                             <a href="#" className="text-gray-900">
                                 {reservation.event.name}
                             </a>{' '}
-                            op {reservation.startDate} tot {reservation.endDate}
+                            op {reservation.startDate.split('T')[0]} tot {reservation.endDate.split('T')[0]}
                         </p>
                     </div>
                 </div>
-                <div
+                {reservation.status === 'open' && <div
                     className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
                     <button
                         type="button"
                         className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500"
+                        onClick={denyOffer}
                     >
                         Weigeren
                     </button>
                     <button
                         type="button"
                         className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500"
+                        onClick={confirmOffer}
                     >
                         Accepteren
                     </button>
-                </div>
+                </div>}
             </div>
 
             <div
@@ -97,11 +169,11 @@ export function View() {
                                     </div>
                                     <div className="sm:col-span-1">
                                         <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                                        <dd className="mt-1 text-sm text-gray-900">{reservation.user.email}</dd>
+                                        <dd className="mt-1 text-sm text-gray-900"><a href={"mailto:" + reservation.user.email}>{reservation.user.email}</a></dd>
                                     </div>
                                     <div className="sm:col-span-1">
                                         <dt className="text-sm font-medium text-gray-500">Datum</dt>
-                                        <dd className="mt-1 text-sm text-gray-900">{reservation.startDate} tot {reservation.endDate}</dd>
+                                        <dd className="mt-1 text-sm text-gray-900">{reservation.startDate.split('T')[0]} tot {reservation.endDate.split('T')[0]}</dd>
                                     </div>
                                     <div className="sm:col-span-1">
                                         <dt className="text-sm font-medium text-gray-500">Telefoonnummer</dt>
@@ -111,6 +183,21 @@ export function View() {
                                         <dt className="text-sm font-medium text-gray-500">Bericht</dt>
                                         <dd className="mt-1 text-sm text-gray-900">
                                             {reservation.message}
+                                        </dd>
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <dt className="text-sm font-medium text-gray-500">Activiteiten</dt>
+                                        <dd className="mt-1 text-sm text-gray-900">
+                                            <ul role="list" className="border border-gray-200 rounded-md divide-y divide-gray-200">
+                                                {activities.map(activity => (
+                                                    <li key={activity.id} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                                        <div className="w-0 flex-1 flex items-center">
+                                                            <TicketIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                            <span className="ml-2 flex-1 w-0 truncate">{activity.name}</span>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
                                         </dd>
                                     </div>
                                     <div className="sm:col-span-2">
@@ -175,10 +262,11 @@ export function View() {
                         <div className="mt-6 flow-root">
                             <TimelineOverview status={reservation.status}/>
                         </div>
-                        {reservation.status !== 'confirmed' && <div className="mt-6 flex flex-col justify-stretch">
+                        {reservation.status === 'open' && <div className="mt-6 flex flex-col justify-stretch">
                             <button
                                 type="button"
                                 className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                                onClick={confirmOffer}
                             >
                                 Accepteren
                             </button>
@@ -196,12 +284,12 @@ export function View() {
                 id: 1,
                 type: getType(0, index),
                 content: 'Actie uitgevoerd',
-                target: 'Aanvraag geaccepteerd',
+                target: 'Status open',
             },
             {
                 id: 2,
                 type: getType(1, index),
-                content: 'Mail verzonden',
+                content: 'Mail versturen',
                 target: 'Wachten op betaling',
             },
             {
@@ -249,8 +337,8 @@ export function View() {
             if (currentIndex === steps.indexOf('failed')) {
                 return eventTypes.failed;
             }
-            if (index < currentIndex || currentIndex === steps.indexOf('confirmed')) {
-                return eventTypes.confirmed;
+            if (index < currentIndex || currentIndex === steps.indexOf('paid')) {
+                return eventTypes.paid;
             }
             if (index === currentIndex) {
                 return eventTypes.pending;

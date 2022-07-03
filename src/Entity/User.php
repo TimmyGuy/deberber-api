@@ -27,9 +27,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="json")
@@ -83,9 +88,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user", cascade={"persist"})
      */
     private $reservations;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fullName;
 
     public function __construct()
     {
@@ -110,21 +120,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
-    }
-
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -303,6 +318,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $reservation->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }

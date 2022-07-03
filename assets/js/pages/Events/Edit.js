@@ -31,13 +31,6 @@ export function Edit() {
         e.preventDefault();
         // Submit to server
         if (values.name && values.description && values.price) {
-            let activities = [];
-            values.events.forEach(activity => {
-                if(activity.id) {
-                    activities.push('\/api\/activities\/' + activity.id);
-                }
-            })
-
             event = updateEvent({
                 id: values.id,
                 name: values.name,

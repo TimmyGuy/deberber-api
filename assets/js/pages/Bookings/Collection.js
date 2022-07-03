@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
+import {getFromApi} from "../Events/EventFunctions";
 
 const reservations = [
     {
@@ -16,6 +17,19 @@ const reservations = [
 ];
 
 export function Collection() {
+    const [reservations, setReservations] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+
+    useEffect(() => {
+        if(loading) {
+            getFromApi('/api/reservations')
+                .then(data => {
+                    setReservations(data);
+                    setLoading(false);
+                })
+        }
+    })
+
     return (
         <div>
             <div className="sm:flex sm:items-center">
@@ -83,9 +97,9 @@ export function Collection() {
                                         <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
                                             {reservation.user.email}
                                         </td>
-                                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{reservation.user.name}</td>
+                                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{reservation.user.fullName}</td>
                                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">€ {reservation.price}</td>
-                                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{reservation.startDate} tot {reservation.endDate}</td>
+                                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{reservation.startDate.split('T')[0]} tot {reservation.endDate.split('T')[0]}</td>
                                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500"><StatusBadge status={reservation.status} /></td>
                                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                             <Link to={"/booking/" + reservation.id} className="text-indigo-600 hover:text-indigo-900">
@@ -112,7 +126,7 @@ export function Collection() {
             case 'failed':
                 classList = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800';
                 break;
-            case 'confirmed':
+            case 'paid':
                 classList = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800';
                 break;
             default:

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,12 +38,14 @@ class ApiLoginController extends AbstractController
     /**
      * @Route("/api/register", name="api_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $hasher, ManagerRegistry $doctrine): Response
+    public function register(Request $request, UserPasswordHasherInterface $hasher, ManagerRegistry $doctrine, UserRepository $userRepository): Response
     {
         $requestBody = json_decode($request->getContent(), true);
 
         $user = new User();
-        $user->setEmail($requestBody['username']);
+        $user->setUsername($requestBody['username']);
+        $user->setEmail($requestBody['email']);
+        $user->setFullName($requestBody['full_name']);
 
         $hashedPassword = $hasher->hashPassword($user, $requestBody['password']);
         $user->setPassword($hashedPassword);
@@ -55,9 +58,10 @@ class ApiLoginController extends AbstractController
         $em->flush();
 
 
-        return $this->json([
-            'id' => $user->getId(),
-            'username' => $user->getUserIdentifier(),
-        ]);
+//        return $this->json([
+//            'id' => $user->getId(),
+//            'username' => $user->getUserIdentifier(),
+//        ]);
+        return $this->json($userRepository->findAll());
     }
 }

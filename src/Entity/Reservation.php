@@ -7,6 +7,7 @@ use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ApiResource()
@@ -28,7 +29,7 @@ class Reservation
     private $event;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -77,6 +78,11 @@ class Reservation
      * @ORM\ManyToMany(targetEntity=Activity::class, mappedBy="reservations")
      */
     private $activities;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transactionId;
 
     public function __construct()
     {
@@ -231,6 +237,18 @@ class Reservation
         if ($this->activities->removeElement($activity)) {
             $activity->removeReservation($this);
         }
+
+        return $this;
+    }
+
+    public function getTransactionId(): ?string
+    {
+        return $this->transactionId;
+    }
+
+    public function setTransactionId(?string $transactionId): self
+    {
+        $this->transactionId = $transactionId;
 
         return $this;
     }

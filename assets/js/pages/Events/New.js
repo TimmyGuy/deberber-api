@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import CondensedTable from "../../components/CondensedTable";
 import ActivityField from "../../components/ActivityField";
 import {headers, createActivity, createEvent} from "./EventFunctions";
-
+import {useNavigate} from "react-router-dom";
 
 export function New() {
     const [values, setValues] = useState({events: []});
+    const navigate = useNavigate();
     const deleteAction = (deletableAction) => {
         setValues({...values, events: values.events.filter(event => event !== deletableAction)});
     }
@@ -30,13 +31,17 @@ export function New() {
                 description: values.description,
                 price: parseInt(values.price),
                 startDate: values.startDate,
-                endDate: values.endDate
+                endDate: values.endDate,
+                tents: parseInt(values.tents)
             });
             event.then(event => {
                 values.events.forEach(activity => {
                     createActivity(activity, event);
                 })
-            });
+            })
+                .then((event) => {
+                    navigate('/events' + event.id);
+                });
         }
     }
 
