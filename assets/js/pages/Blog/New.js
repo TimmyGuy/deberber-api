@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Editor from "../../components/Editor/Editor";
 import BackgroundFinder from "../../components/BackgroundFinder";
-import {ADD} from "../../contexts/NotificationContext";
+import {ADD, useNotificationContext} from "../../contexts/NotificationContext";
 
 export function New() {
     const [inputs, setInputs] = useState({slug: ''});
@@ -9,6 +9,8 @@ export function New() {
     const [loading, setLoading] = useState(false);
     const [selectedBackground, setSelectedBackground] = useState();
     const [thumbnail, setThumbnail] = useState();
+    const {dispatch} = useNotificationContext();
+
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;

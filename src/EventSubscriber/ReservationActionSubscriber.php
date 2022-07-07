@@ -55,8 +55,7 @@ class ReservationActionSubscriber  implements \Symfony\Component\EventDispatcher
             $user->setStatus(User::STATUS_ACTIVE);
             $data->setUser($user);
             $data->setStatus('open');
-            $tents = 1;
-            $tents *= ceil($data->getAdults() + $data->getChildren() / 6);
+            $tents = ceil(($data->getAdults() + $data->getChildren()) / 6);
             $data->setTents($tents);
         }
     }

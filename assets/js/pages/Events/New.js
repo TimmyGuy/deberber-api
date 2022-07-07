@@ -3,10 +3,13 @@ import CondensedTable from "../../components/CondensedTable";
 import ActivityField from "../../components/ActivityField";
 import {headers, createActivity, createEvent} from "./EventFunctions";
 import {useNavigate} from "react-router-dom";
+import {ADD, useNotificationContext} from "../../contexts/NotificationContext";
 
 export function New() {
     const [values, setValues] = useState({events: []});
     const navigate = useNavigate();
+    const {dispatch} = useNotificationContext();
+
     const deleteAction = (deletableAction) => {
         setValues({...values, events: values.events.filter(event => event !== deletableAction)});
     }
@@ -40,7 +43,8 @@ export function New() {
                 })
             })
                 .then((event) => {
-                    navigate('/events' + event.id);
+                    dispatch({type: ADD, payload: {title: 'Evenement aangemaakt', description: 'Het evenement is succesvol aangemaakt.', type: 'success'}});
+                    navigate('/events/' + event.id);
                 });
         }
     }

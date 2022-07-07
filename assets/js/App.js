@@ -27,7 +27,7 @@ function App() {
         <BrowserRouter>
             <Sidebar>
                 <Routes>
-                    <Route path="/" element={<p>Dashboard (komt bij bookingsysteem)</p>}/>
+                    <Route path="/" element={<p>Dashboard</p>}/>
                     <Route path="/navigation" element={<Navigation/>}/>
                     <Route path="/settings" element={<Settings/>}/>
                     <Route path="blog" element={<BlogPage/>}/>
